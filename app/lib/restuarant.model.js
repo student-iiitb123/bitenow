@@ -1,13 +1,51 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
 const schema = mongoose.Schema
 
-const userSchema= new schema({
-    name:{type:String,
-        required:true
-    }
-})
 
-const User = mongoose.models('restuarants',userSchema) || mongoose.models.restuarants
 
-export default User; 
+const userSchema = new schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    city: {
+      type: String,
+      required: true,
+    },
+
+    address: {
+      type: String,
+      required: true,
+    },
+
+    phone: {
+      type: String,
+      required: true,
+    },
+
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+    },
+
+    password: {
+      type: String,
+      required: true,
+      minlength: 6,
+    },
+  },
+  {
+    timestamps: true, 
+  }
+);
+
+const User = mongoose.models.restuarants 
+  || mongoose.model('restuarants', userSchema);
+
+export default User;
