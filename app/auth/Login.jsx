@@ -3,7 +3,8 @@ import React from 'react'
 const Login = () => {
   return (
     <>
-      <div className="text-center my-4">
+    <div className='h-[350px]'>
+      <div className="text-center my-4 ">
         <h1 className="text-2xl font-semibold">Login Page</h1>
       </div>
 
@@ -26,6 +27,7 @@ const Login = () => {
           Login
         </button>
       </form>
+      </div>
     </>
   );
 };
