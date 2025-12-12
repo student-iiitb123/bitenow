@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import Login from "../_auth/Login.jsx"
-import Signup from "../_auth/Signup.jsx"
+import Login from "../auth/Login.jsx"
+import Signup from "../auth/Signup.jsx"
 
 
 const Page = () => {

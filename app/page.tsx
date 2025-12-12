@@ -4,7 +4,7 @@ import Footer from './_components/Footer'
 const page = () => {
   return (
     <>
-      <Navbar />
+    
    
    </>
  
