@@ -16,10 +16,10 @@ const Navbar = () => {
             <Link href="/">Home</Link>
           </li>
           <li className="hover:text-orange-500 transition">
-            <Link href="/login">Login</Link>
+            <Link href="/login">Signin</Link>
           </li>
           <li className="hover:text-orange-500 transition">
-            <Link href="/profile">Profile</Link>
+            <Link href="/profile">Home</Link>
           </li>
         </ul>
 
