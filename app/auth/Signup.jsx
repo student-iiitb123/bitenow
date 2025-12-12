@@ -4,6 +4,7 @@ import React, { useState } from "react";
 
 const Signup = () => {
   const [name, setName] = useState("");
+  const [restuarant, setRestuarant] = useState("");
   const [city, setCity] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
@@ -20,6 +21,7 @@ const Signup = () => {
       },
       body: JSON.stringify({
         name,
+        restuarant,
         city,
         address,
         phone,
@@ -47,6 +49,14 @@ const Signup = () => {
           placeholder="Full Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          className="w-72 h-10 px-3 border border-gray-400 rounded-md"
+        />
+
+         <input
+          type="text"
+          placeholder="Restuarant"
+          value={restuarant}
+          onChange={(e) => setRestuarant(e.target.value)}
           className="w-72 h-10 px-3 border border-gray-400 rounded-md"
         />
 

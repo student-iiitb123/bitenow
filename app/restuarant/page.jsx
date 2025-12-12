@@ -22,6 +22,7 @@ const Page = () => {
       >
         {toggle ? "New user? Create an account" : "Already have an account? Login"}
       </button>
+      <br />
     </div>
   )
 }
