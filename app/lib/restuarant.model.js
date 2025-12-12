@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const schema = mongoose.schema
+const schema = mongoose.Schema
 
 const userSchema= new schema({
     name:{type:String,
