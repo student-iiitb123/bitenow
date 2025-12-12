@@ -1,11 +1,17 @@
 import { NextResponse } from "next/server";
+import { User} from "../../lib/restuarant.model"
 import dbConnect from "../../lib/db";
 
+
 export async function GET() {
-  try {
     await dbConnect();
-    return NextResponse.json({ result: true });
-  } catch (error) {
-    return NextResponse.json({ result: false, error: error.message });
-  }
+    const data = await User.find();
+    console.log(data)
+    
+    return NextResponse.json({result:true});
+
 }
+
+
+
+
