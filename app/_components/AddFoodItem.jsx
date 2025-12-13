@@ -9,9 +9,9 @@ const [error, setError]= useState(false)
 
   const handleAddFoodItem = () => {
     console.log(name, price, path, description);
-    if(!name || !path || price || !description){
+    if(!name || !path || !price || !description){
       setError(true);
-      return false
+      return;
     }else{
       setError(false)
     }
@@ -26,7 +26,7 @@ const [error, setError]= useState(false)
         </h1>
 
         <div className="space-y-4">
-        <div>
+        <div className="relative">
             <input
             type="text"
             placeholder="Enter food name"
@@ -34,10 +34,10 @@ const [error, setError]= useState(false)
             onChange={(e) => setName(e.target.value)}
             className="w-full h-11 px-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
-          {error && !name && <span className="absolute p-2 text-red-500 text-[13px]">Please enter a valid name</span> }
+          {error && !name && <span className="absolute left-0 top-full mt-1 text-red-500 text-[13px]">Please enter a valid name</span> }
         </div>
 
-          <div>
+          <div className="relative">
             <input
             type="number"
             placeholder="Enter food price"
@@ -45,10 +45,10 @@ const [error, setError]= useState(false)
             onChange={(e) => setPrice(e.target.value)}
             className="w-full h-11 px-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
-          {error && !price && <span className="absolute p-2 text-red-500 text-[13px]">Please enter a valid price</span> }
+          {error && !price && <span className="absolute left-0 top-full mt-1 text-red-500 text-[13px]">Please enter a valid price</span> }
           </div>
 
-         <div>
+         <div className="relative">
            <input
             type="text"
             placeholder="Enter image path"
@@ -56,17 +56,17 @@ const [error, setError]= useState(false)
             onChange={(e) => setPath(e.target.value)}
             className="w-full h-11 px-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
-          {error && !path && <span className="absolute p-2 text-red-500 text-[13px]">Please enter a valid path</span> }
+          {error && !path && <span className="absolute left-0 top-full mt-1 text-red-500 text-[13px]">Please enter a valid path</span> }
          </div>
 
-          <div>
+          <div className="relative">
             <textarea
             placeholder="Enter description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             className="w-full h-24 px-4 py-2 border rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
-          {error && !description && <span className="absolute p-2 text-red-500 text-[13px]">Please enter a valid description</span> }
+          {error && !description && <span className="absolute left-0 top-full mt-1 text-red-500 text-[13px]">Please enter a valid description</span> }
           </div>
 
           <button
