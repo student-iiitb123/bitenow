@@ -1,8 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+
+
 
 const Login = () => {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -23,6 +27,9 @@ const Login = () => {
 
     result = await result.json();
     console.log("Login Response:", result);
+   if (result.success) {
+    router.push("/restuarant/dashboard"); // ✅ correct redirect
+  }
    
   };
 

@@ -32,6 +32,9 @@ const Signup = () => {
 
     result = await result.json();
     console.log("Response:", result);
+     if (result.success) {
+    router.push("/restuarant/dashboard"); 
+  }
   };
 
   return (
