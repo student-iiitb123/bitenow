@@ -1,8 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Signup = () => {
+  
+  const router = useRouter();
+
   const [name, setName] = useState("");
   const [restuarant, setRestuarant] = useState("");
   const [city, setCity] = useState("");
@@ -11,31 +15,42 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    let result = await fetch("http://localhost:3000/api/restuarant", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        restuarant,
-        city,
-        address,
-        phone,
-        email,
-        password,
-      }),
-    });
+  const res = await fetch("http://localhost:3000/api/restuarant", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name,
+      restuarant,
+      city,
+      address,
+      phone,
+      email,
+      password,
+    }),
+  });
 
-    result = await result.json();
-    console.log("Response:", result);
-     if (result.success) {
-    router.push("/restuarant/dashboard"); 
+  const data = await res.json();
+  console.log("Response:", data);
+
+  if (data.success) {
+    const user = data.result;
+
+    delete user.password;
+
+    localStorage.setItem(
+      "resturantUser",
+      JSON.stringify(user)
+    );
+
+    router.push("/restuarant/dashboard");
   }
-  };
+};
+
 
   return (
     <>
