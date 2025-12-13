@@ -28,7 +28,16 @@ const Login = () => {
     result = await result.json();
     console.log("Login Response:", result);
    if (result.success) {
-    router.push("/restuarant/dashboard"); // ✅ correct redirect
+    const user = result.result;
+
+    delete user.password;
+
+    localStorage.setItem(
+      "resturantUser",
+      JSON.stringify(user)
+    );
+
+    router.push("/restuarant/dashboard");
   }
    
   };
