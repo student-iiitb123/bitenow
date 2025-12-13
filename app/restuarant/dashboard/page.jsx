@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import AddFoodItems from "../../_components/AddFoodItem";
+import FoodItemList from "../../_components/FoodItemList";
 
 const Page = () => {
   const [addItem, setAddItem] = useState(false);
@@ -41,7 +42,7 @@ const Page = () => {
           <AddFoodItems />
         ) : (
           <h1 className="text-2xl font-semibold text-gray-800">
-            Restaurant Dashboard
+           <FoodItemList />
           </h1>
         )}
       </div>
