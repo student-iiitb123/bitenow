@@ -8,7 +8,9 @@ const AddFoodItems = () => {
   const [price, setPrice] = useState("");
   const [path, setPath] = useState("");
   const [description, setDescription] = useState("");
+const [error, setError]= useState(false)
 
+<<<<<<< HEAD
  const handleAddFoodItem = async () => {
   let restro_id;
 
@@ -42,6 +44,17 @@ const AddFoodItems = () => {
   }
 };
 
+=======
+  const handleAddFoodItem = () => {
+    console.log(name, price, path, description);
+    if(!name || !path || !price || !description){
+      setError(true);
+      return;
+    }else{
+      setError(false)
+    }
+  };
+>>>>>>> 0f74e5a35083c53d2a46ede332b3a06694540e92
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -52,36 +65,48 @@ const AddFoodItems = () => {
         </h1>
 
         <div className="space-y-4">
-          <input
+        <div className="relative">
+            <input
             type="text"
             placeholder="Enter food name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="w-full h-11 px-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
+          {error && !name && <span className="absolute left-0 top-full mt-1 text-red-500 text-[13px]">Please enter a valid name</span> }
+        </div>
 
-          <input
+          <div className="relative">
+            <input
             type="number"
             placeholder="Enter food price"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             className="w-full h-11 px-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
+          {error && !price && <span className="absolute left-0 top-full mt-1 text-red-500 text-[13px]">Please enter a valid price</span> }
+          </div>
 
-          <input
+         <div className="relative">
+           <input
             type="text"
             placeholder="Enter image path"
             value={path}
             onChange={(e) => setPath(e.target.value)}
             className="w-full h-11 px-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
+          {error && !path && <span className="absolute left-0 top-full mt-1 text-red-500 text-[13px]">Please enter a valid path</span> }
+         </div>
 
-          <textarea
+          <div className="relative">
+            <textarea
             placeholder="Enter description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             className="w-full h-24 px-4 py-2 border rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
+          {error && !description && <span className="absolute left-0 top-full mt-1 text-red-500 text-[13px]">Please enter a valid description</span> }
+          </div>
 
           <button
             onClick={handleAddFoodItem}
