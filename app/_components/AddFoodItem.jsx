@@ -10,14 +10,14 @@ const AddFoodItems = () => {
   const [error, setError] = useState(false);
 
   const handleAddFoodItem = async () => {
-    // 🔴 validation
+  
     if (!name || !price || !path || !description) {
       setError(true);
       return;
     }
     setError(false);
 
-    // 🔵 get restaurant id
+    
     const restuarantData = JSON.parse(
       localStorage.getItem("resturantUser")
     );
@@ -29,7 +29,7 @@ const AddFoodItems = () => {
 
     const restro_id = restuarantData._id;
 
-    // 🟢 API call
+    //  API call
     const res = await fetch("http://localhost:3000/api/foods", {
       method: "POST",
       headers: {
@@ -48,9 +48,9 @@ const AddFoodItems = () => {
     console.log("Food Item Response:", result);
 
     if (result.success) {
-      alert("Food item added successfully 💖");
+      alert("Food item added successfully ");
 
-      // optional reset
+    
       setName("");
       setPrice("");
       setPath("");
