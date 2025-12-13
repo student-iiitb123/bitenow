@@ -18,9 +18,7 @@ const AddFoodItems = () => {
     setError(false);
 
     // 🔵 get restaurant id
-    const restuarantData = JSON.parse(
-      localStorage.getItem("resturantUser")
-    );
+    const restuarantData = JSON.parse(localStorage.getItem("resturantUser"));
 
     if (!restuarantData) {
       alert("Restaurant not logged in");
@@ -61,13 +59,11 @@ const AddFoodItems = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
-
         <h1 className="text-2xl font-semibold text-center mb-6">
           Add New Food Item
         </h1>
 
         <div className="space-y-4">
-
           <div className="relative">
             <input
               type="text"
@@ -133,7 +129,6 @@ const AddFoodItems = () => {
           >
             Add Food Item
           </button>
-
         </div>
       </div>
     </div>
