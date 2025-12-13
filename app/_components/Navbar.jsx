@@ -40,7 +40,7 @@ const Navbar = () => {
                 <button
                   onClick={() => {
                     localStorage.removeItem("resturantUser");
-                    router.push("/login");
+                    router.push("/restuarant");
                   }}
                   className="text-red-500"
                 >
