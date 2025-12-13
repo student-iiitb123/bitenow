@@ -52,7 +52,7 @@ const Signup = () => {
           className="w-72 h-10 px-3 border border-gray-400 rounded-md"
         />
 
-         <input
+        <input
           type="text"
           placeholder="Restuarant"
           value={restuarant}

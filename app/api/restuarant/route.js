@@ -12,25 +12,25 @@ export async function GET() {
 
 
 export async function POST(request) {
-  try {
-    const payload = await request.json();
+  const payload = await request.json();
+  let result;
 
-    await dbConnect();
+  await dbConnect();
 
-    const newSeller = new User(payload);
-    const result = await newSeller.save();
-
-    return NextResponse.json({
-      success: true,
-      result,
+  if (payload.login) {
+    // LOGIN
+    result = await User.findOne({
+      email: payload.email,
+      password: payload.password,
     });
-  } catch (error) {
-    console.error("Error:", error);
-
-    return NextResponse.json(
-      { success: false, error: error.message },
-      { status: 500 }
-    );
+  } else {
+    // SIGNUP
+    const newSeller = new User(payload);
+    result = await newSeller.save();
   }
-}
 
+  return NextResponse.json({
+    success: true,
+    result,
+  });
+}
