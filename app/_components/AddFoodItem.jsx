@@ -1,3 +1,6 @@
+"use client"
+
+
 import React, { useState } from "react";
 
 const AddFoodItems = () => {
@@ -6,9 +9,39 @@ const AddFoodItems = () => {
   const [path, setPath] = useState("");
   const [description, setDescription] = useState("");
 
-  const handleAddFoodItem = () => {
-    console.log(name, price, path, description);
-  };
+ const handleAddFoodItem = async () => {
+  let restro_id;
+
+  const restuarantData = JSON.parse(
+    localStorage.getItem("resturantUser")
+  );
+
+  if (restuarantData) {
+    restro_id = restuarantData._id;
+  }
+
+  const res = await fetch("http://localhost:3000/api/foods", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name,
+      price,
+      path,
+      description,
+      restro_id,
+    }),
+  });
+
+  const result = await res.json();
+  console.log("Food Item Response:", result);
+
+  if (result.success) {
+    alert("Food item added successfully ");
+  }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">

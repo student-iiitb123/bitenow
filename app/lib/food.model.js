@@ -11,7 +11,7 @@ const foodSchema = new mongoose.Schema({
         required: true
     },
 
-    img_path: {
+    path: {
         type: String,
         required: true
     },
