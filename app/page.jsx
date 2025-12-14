@@ -52,7 +52,7 @@ export default function Home() {
     <main className="min-h-screen bg-gradient-to-r from-orange-500 to-orange-600 overflow-hidden">
       <CustomerHeader />
 
-      {/* Decorative Images */}
+      {/* Decorative Image */}
       <img
         src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/portal/testing/seo-home/Veggies_new.png"
         className="hidden md:block absolute left-0 top-32 w-56 opacity-90"
