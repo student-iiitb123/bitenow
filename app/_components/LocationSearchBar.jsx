@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import ResturantListing from "./ResturantListing";
 
 export default function LocationInput() {
   const [locations, setLocations] = useState([]); // all locations
@@ -38,6 +39,8 @@ export default function LocationInput() {
   const handleSelect = (city) => {
     setValue(city);
     setShowDropdown(false);
+    loadResturant({location:city})
+
   };
 
   return (

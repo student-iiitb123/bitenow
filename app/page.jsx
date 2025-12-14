@@ -80,7 +80,7 @@ export default function Home() {
             Popular Restaurants Near You
           </h2>
 
-          <ResturantListing />
+          <ResturantListing loadRestuarant={loadRestuarant}  />
         </div>
       </section>
 

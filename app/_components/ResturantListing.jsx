@@ -7,8 +7,16 @@ const ResturantListing = () => {
     loadRestuarant();
   }, []);
 
-  const loadRestuarant = async () => {
-    const res = await fetch("http://localhost:3000/api/restuarant/customers");
+  const loadRestuarant = async (params) => {
+    let url = "http://localhost:3000/api/restuarant/customers";
+    if(params?.location){
+  url = url + "?location=" + params.location;
+
+    }
+    else if(params?.restuarant){
+
+    }
+    const res = await fetch(url);
     const data = await res.json();
 
     if (data.return) {
