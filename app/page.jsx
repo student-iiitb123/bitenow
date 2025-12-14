@@ -32,7 +32,7 @@ export default function Home() {
     }
   };
 
-  // Load locations
+  // Load location
   useEffect(() => {
     loadLocations();
   }, []);
