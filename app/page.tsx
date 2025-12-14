@@ -15,7 +15,7 @@ export default function Home() {
 
   
   
-  //   response =await response.json();
+  
   //   if(response.success){
   //     setRestaurants(response.result)
 
