@@ -12,7 +12,7 @@ const EditFoodItems = (props) => {
   const [description, setDescription] = useState("");
   const [error, setError] = useState(false);
 
-  const router = useRouter
+  const router = useRouter()
 
   const handleEditFoodItem = async () => {
   
