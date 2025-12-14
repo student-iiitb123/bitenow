@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 
 export default function LocationInput({loadResturant}) {
-  const [locations, setLocations] = useState([]); // all locations
+  const [locations, setLocations] = useState([]); // all location
   const [filtered, setFiltered] = useState([]);   // matching locations
   const [showDropdown, setShowDropdown] = useState(false); // show/hide dropdown
   const [value, setValue] = useState(""); // input value
