@@ -29,13 +29,3 @@ export async function DELETE(request, { params }) {
 }
 
 
-export async function  PUT(request,{params}) {
-
-    const {id} =await params;
-    const result = await Food.updateOne({_id:id});
-    return NextResponse.json({
-    success: true
-  });
-
-    
-}
