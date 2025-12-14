@@ -13,7 +13,7 @@ export default function Home() {
 //   // },[]
 // )
 
-  // const loadRestaurants=async()=>{
+  
   //   let response = await fetch ('');
   //   response =await response.json();
   //   if(response.success){
