@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import ResturantListing from "./ResturantListing";
+
 
 export default function LocationInput() {
   const [locations, setLocations] = useState([]); // all locations

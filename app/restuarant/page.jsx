@@ -8,6 +8,7 @@ import Signup from "../auth/Signup.jsx"
 const Page = () => {
   const [toggle, setToggle] = useState(false)
 
+  
   const handleToggle = () => {
     setToggle((prev) => !prev)  
   }
