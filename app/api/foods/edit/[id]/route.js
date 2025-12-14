@@ -9,3 +9,14 @@ await dbConnect();
   const success = result ? true : false;
  return NextResponse.json({ success, result });
 }
+
+export async function PUT(request,{params}) {
+
+    const {id} =await params;
+    const result = await Food.updateOne({_id:id});
+    return NextResponse.json({
+    success: true
+  });
+
+    
+}
