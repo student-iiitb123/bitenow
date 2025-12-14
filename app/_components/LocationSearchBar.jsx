@@ -9,6 +9,8 @@ export default function LocationInput({loadResturant}) {
   const [showDropdown, setShowDropdown] = useState(false); // show/hide dropdown
   const [value, setValue] = useState(""); // input value
 
+ 
+  
   // Load locations from API when component loads
   useEffect(() => {
     fetchLocations();
