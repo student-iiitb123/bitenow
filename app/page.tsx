@@ -1,11 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomerHeader from "./_components/CustomerHeader";
 import Footer from "./_components/Footer";
 
 export default function Home() {
   const [restaurants, setRestaurants] = useState([]);
+  const [area,setArea] = useState([])
+
+
+  useEffect(() => {
+   loadLocations();
+  },[]);
+
+  const loadLocations = async () => {
+      let response= await fetch("http://localhost:3000/api/restuarant/customers/location");
+      response = await response.json();
+     if(response.success){
+       setArea(response.result);
+     }
+        
+      
+  }
 
   return (
     <main className="relative min-h-screen bg-gradient-to-r from-orange-500 to-orange-600 overflow-hidden">
