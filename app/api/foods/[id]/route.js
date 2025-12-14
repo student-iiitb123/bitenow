@@ -16,10 +16,10 @@ export async function GET(request,content){
 }
 
 
-export async function DELETE(request, context) {
+export async function DELETE(request, { params }) {
   await dbConnect();
 
-  const { id } = await context.params;
+  const { id } =await params;
 
   const result = await Food.deleteOne({ _id: id });
 
