@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import {Router, useRouter} from "next/navigation"
 
 const FoodItemList = () => {
   const [foods, setFoods] = useState([]);
-
+  const router=useRouter()
   useEffect(() => {
     const fetchFood = async () => {
       try {
@@ -65,7 +66,8 @@ const FoodItemList = () => {
                   <button className="px-3 py-1 text-sm text-white bg-red-500 rounded-lg hover:bg-red-600 transition">
                     Delete
                   </button>
-                  <button className="px-3 py-1 text-sm text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition">
+                  <button className="px-3 py-1 text-sm text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition"
+                  onClick={()=>router.push('dashboard/'+item._id)}>
                     Edit
                   </button>
                 </td>

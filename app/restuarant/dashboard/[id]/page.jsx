@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const EditFoodItems = (props) => {
@@ -10,6 +11,8 @@ const EditFoodItems = (props) => {
   const [path, setPath] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState(false);
+
+  const router = useRouter
 
   const handleEditFoodItem = async () => {
   
@@ -92,9 +95,14 @@ const EditFoodItems = (props) => {
 
           <button
             onClick={handleEditFoodItem}
-            className="w-full h-11 bg-orange-600 text-white rounded-md hover:bg-orange-700"
-          >
+            className="w-full h-11 bg-orange-600 text-white rounded-md hover:bg-orange-700">
             Update Food Item
+          </button>
+
+           <button
+            onClick={()=>router.push('../dashboard')}
+            className="w-full h-11 bg-orange-600 text-white rounded-md hover:bg-orange-700">
+            Back to Food Item List
           </button>
         </div>
       </div>
