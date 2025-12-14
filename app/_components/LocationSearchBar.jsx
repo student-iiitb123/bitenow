@@ -11,7 +11,7 @@ export default function LocationInput({loadResturant}) {
 
  
   
-  // Load locations from API when component loads
+  // Load locations from API when component loads you see
   useEffect(() => {
     fetchLocations();
   }, []);
