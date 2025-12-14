@@ -14,3 +14,16 @@ export async function GET(request,content){
 
   return NextResponse.json({result,success});
 }
+
+
+export async function DELETE(request, context) {
+  await dbConnect();
+
+  const { id } = await context.params;
+
+  const result = await Food.deleteOne({ _id: id });
+
+  return NextResponse.json({
+    success: result.deletedCount > 0,
+  });
+}
