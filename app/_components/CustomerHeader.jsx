@@ -42,7 +42,7 @@ const CustomerHeader = () => {
           </li>
         </ul>
 
-        {/* Auth Buttons */}
+        
         <div className="flex gap-4">
           <Link
             href="/login"
