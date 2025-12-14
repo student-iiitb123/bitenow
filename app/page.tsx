@@ -2,92 +2,85 @@
 
 import { useEffect, useState } from "react";
 import CustomerHeader from "./_components/CustomerHeader";
-import LocationInput from "./_components/LocationSearchBar"
+import LocationInput from "./_components/LocationSearchBar";
+import ResturantListing from "./_components/ResturantListing";
 import Footer from "./_components/Footer";
 
 export default function Home() {
-  const [restaurants, setRestaurants] = useState([]);
-  const [area,setArea] = useState([])
-
+  const [area, setArea] = useState([]);
 
   useEffect(() => {
-   loadLocations();
-  },[]);
+    loadLocations();
+  }, []);
 
   const loadLocations = async () => {
-      let response= await fetch("http://localhost:3000/api/restuarant/customers/location");
-      response = await response.json();
-     if(response.success){
-       setArea(response.result);
-     }
-        
-      
-  }
+    let response = await fetch(
+      "http://localhost:3000/api/restuarant/customers/location"
+    );
+    response = await response.json();
+
+    if (response.success) {
+      setArea(response.result);
+    }
+  };
 
   return (
-    <main className="relative min-h-screen bg-gradient-to-r from-orange-500 to-orange-600 overflow-hidden">
+    <main className="min-h-screen bg-gradient-to-r from-orange-500 to-orange-600 overflow-hidden">
       <CustomerHeader />
 
+      {/* Decorative Images */}
       <img
         src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/portal/testing/seo-home/Veggies_new.png"
         className="hidden md:block absolute left-0 top-32 w-56 opacity-90"
-        alt="food"
+        alt=""
       />
-
       <img
         src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/portal/testing/seo-home/Sushi_replace.png"
         className="hidden md:block absolute right-0 top-20 w-60 opacity-90"
-        alt="food"
+        alt=""
       />
 
-      <img
-        src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/PC_Mweb/Biryani.png"
-        className="hidden md:block absolute left-10 bottom-10 w-52 opacity-90"
-        alt="food"
-      />
-
-      <img
-        src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/PC_Mweb/Noodles.png"
-        className="hidden md:block absolute right-16 bottom-12 w-48 opacity-90"
-        alt="food"
-      />
-
-      <section className="relative z-10 flex flex-col items-center text-center px-4 py-16 md:py-24">
-        <h1 className="text-white text-2xl sm:text-3xl md:text-5xl font-bold leading-tight mb-6 md:mb-8">
-          Order food & groceries.
-          <br className="hidden sm:block" />
-          Discover best restaurants.
-          <br />
+      {/* HERO SECTION */}
+      <section className="relative z-10 flex flex-col items-center text-center px-4 py-20">
+        <h1 className="text-white text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight mb-10">
+          Order food & groceries <br />
+          Discover best restaurants <br />
           <span className="text-yellow-200">BiteNow it!</span>
         </h1>
 
-        <div className="bg-orange-500 p-3 md:p-4 rounded-2xl flex flex-col md:flex-row gap-3 md:gap-4 w-full max-w-5xl">
-          <div className="flex items-center gap-3 w-full md:w-1/3 bg-white rounded-full px-4 py-3 shadow-md hover:shadow-lg transition-all duration-300">
-            <span className="text-orange-500 text-lg">📍</span>
+        {/* SEARCH BAR */}
+        <div className="bg-white/20 backdrop-blur-md p-4 rounded-3xl w-full max-w-4xl shadow-xl">
+          <div className="flex flex-col md:flex-row gap-4">
+            
+            {/* LOCATION */}
+            <div className="flex items-center gap-3 w-full md:w-1/3 bg-white rounded-full px-5 py-3 shadow hover:shadow-lg transition">
+              <span className="text-orange-500 text-lg">📍</span>
+              <LocationInput />
+            </div>
 
-            {/* <input
-              type="text"
-              placeholder="Enter your  location"
-              className="w-full outline-none text-gray-700 placeholder-gray-400 text-sm"
-            /> */}
-            <LocationInput />
-
-            <span className="text-gray-400 hover:text-orange-500 transition">
-              ⌄
-            </span>
+            {/* SEARCH */}
+            <div className="flex items-center gap-3 w-full md:w-2/3 bg-white rounded-full px-5 py-3 shadow hover:shadow-lg transition">
+              <input
+                type="text"
+                placeholder="Search restaurant or food"
+                className="w-full outline-none text-gray-800 placeholder-gray-400 text-sm md:text-base"
+              />
+              <span className="text-gray-500 text-xl hover:text-orange-500">
+                🔍
+              </span>
+            </div>
           </div>
+        </div>
+      </section>
 
-          <div className="flex items-center gap-3 w-full md:w-2/3 bg-white rounded-full px-5 py-3 shadow-md hover:shadow-xl transition-all duration-300">
-            <input
-              type="text"
-              placeholder="Search for restaurant, item or more"
-              className="w-full outline-none text-gray-800 placeholder-gray-400 text-sm md:text-base"
-            />
+      {/* RESTAURANT LIST */}
+      <section className="bg-gray-50 rounded-t-3xl mt-16 px-4 py-10">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-2xl font-bold mb-6 text-gray-800">
+            Popular Restaurants Near You
+          </h2>
 
-            <span className="text-gray-500 text-xl hover:text-orange-500 transition">
-              🔍
-            </span>
-          </div>
+          <ResturantListing />
         </div>
       </section>
 
