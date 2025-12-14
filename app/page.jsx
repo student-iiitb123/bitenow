@@ -20,6 +20,9 @@ export default function Home() {
     if (params?.location) {
       url = url + "?location=" + params.location;
     }
+    else if(params?.restuarant){
+      url = url + "?restuarant=" + params.restuarant;
+    }
 
     const res = await fetch(url);
     const data = await res.json();
@@ -75,12 +78,16 @@ export default function Home() {
             {/* LOCATION */}
             <div className="flex items-center gap-3 w-full md:w-1/3 bg-white rounded-full px-5 py-3 shadow hover:shadow-lg transition">
               <span className="text-orange-500 text-lg">📍</span>
-              <LocationInput />
+             <LocationInput loadResturant={loadRestuarant} />
+
             </div>
 
             {/* SEARCH */}
             <div className="flex items-center gap-3 w-full md:w-2/3 bg-white rounded-full px-5 py-3 shadow hover:shadow-lg transition">
               <input
+              onChange={(e) => {
+                 loadRestuarant({restuarant:e.target.value})
+              }}
                 type="text"
                 placeholder="Search restaurant or food"
                 className="w-full outline-none text-gray-800 placeholder-gray-400 text-sm md:text-base"
