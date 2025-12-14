@@ -35,7 +35,7 @@ const CustomerHeader = () => {
 
           <li>
             <Link
-              href="/restaurant/add"
+              href="/restuarant"
               className="hover:text-orange-600 transition">
               Add Restaurant
             </Link>
