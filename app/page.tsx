@@ -1,15 +1,11 @@
-import Navbar from './_components/Navbar'
-import Footer from './_components/Footer'
 
-const page = () => {
-  return (
-    <>
-    
-   
-   </>
- 
+import CustomerHeader from "./_components/CustomerHeader"
 
-  )
+export default function Home() {
+  return(
+    <main>
+      <CustomerHeader />
+      <h1>Food dilevery App</h1>
+    </main>
+  );
 }
-
-export default page
