@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import CustomerHeader from "./_components/CustomerHeader";
+import LocationInput from "./_components/LocationSearchBar"
 import Footer from "./_components/Footer";
 
 export default function Home() {
@@ -64,11 +65,12 @@ export default function Home() {
           <div className="flex items-center gap-3 w-full md:w-1/3 bg-white rounded-full px-4 py-3 shadow-md hover:shadow-lg transition-all duration-300">
             <span className="text-orange-500 text-lg">📍</span>
 
-            <input
+            {/* <input
               type="text"
-              placeholder="Enter your delivery location"
+              placeholder="Enter your  location"
               className="w-full outline-none text-gray-700 placeholder-gray-400 text-sm"
-            />
+            /> */}
+            <LocationInput />
 
             <span className="text-gray-400 hover:text-orange-500 transition">
               ⌄
