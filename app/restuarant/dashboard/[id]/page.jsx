@@ -4,7 +4,7 @@ import { useRouter, useParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
 
 const EditFoodItems = () => {
-  const params = useParams(); // get the dynamic route param
+  const params = useParams(); 
   const { id } = params; 
   const router = useRouter();
 
@@ -22,7 +22,7 @@ useEffect(() => {
       const data = await res.json();
       console.log("Fetched food item:", data);
 
-      // Adjust according to actual response structure
+     
       const item = data.result || data;
       setName(item.name || "");
       setPrice(item.price || "");
