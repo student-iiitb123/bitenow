@@ -14,7 +14,7 @@ export default function Home() {
 // )
 
   
-  //   let response = await fetch ('');
+  
   //   response =await response.json();
   //   if(response.success){
   //     setRestaurants(response.result)
