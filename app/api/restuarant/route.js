@@ -3,14 +3,6 @@ import  User from "../../lib/restuarant.model"
 import dbConnect from "../../lib/db";
 
 
-export async function GET() {
-    await dbConnect();
-    const data = await User.find();
-    console.log(data);
-    return NextResponse.json({result:true});
-}
-
-
 export async function POST(request) {
   const payload = await request.json();
   let result;
@@ -23,6 +15,13 @@ export async function POST(request) {
       email: payload.email,
       password: payload.password,
     });
+
+    if (!result) {
+      return NextResponse.json({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
   } else {
     // SIGNUP
     const newSeller = new User(payload);

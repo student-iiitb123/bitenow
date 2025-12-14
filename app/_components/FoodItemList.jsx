@@ -5,28 +5,35 @@ import { useRouter } from "next/navigation";
 
 const FoodItemList = () => {
   const [foods, setFoods] = useState([]);
-  const router = useRouter();
 
-  
   useEffect(() => {
-    const fetchFood = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/api/foods/693d108e347fb1e8a97704c6");
-        const data = await response.json();
-        setFoods(data.result || []);
-      } catch (error) {
-        console.error("Fetch error:", error);
-      }
-    };
 
-    fetchFood();
-  }, []);
+loadcomponents();
+  },[])
 
+ const loadcomponents = async () => {
+  const resturantData = JSON.parse(localStorage.getItem('resturantUser'));
+  const resto_id = resturantData._id;
+  console.log(resto_id) 
 
-  const deleteFoodItems = async (id) => {
+  const response = await fetch(
+    "http://localhost:3000/api/restuarant/foods/" +resto_id
+  );
+
+  const result = await response.json();
+
+  if (result) {
+    console.log(result);
+    setFoods(result.result); 
+  } else {
+    alert("error");
+  }
+};
+
+const deleteFoodItems = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/foods/${id}`,
+        `http://localhost:3000/api/restuarant/foods/${id}`,
         { method: "DELETE" }
       );
 
@@ -64,37 +71,47 @@ const FoodItemList = () => {
           </thead>
 
           <tbody>
-            {foods.map((item, index) => (
-              <tr key={item._id} className="hover:bg-gray-50">
-                <td className="px-4 py-3">{index + 1}</td>
-                <td className="px-4 py-3 font-medium">{item.name}</td>
-                <td className="px-4 py-3">{item.price}</td>
-                <td className="px-4 py-3">{item.description}</td>
-                <td className="px-4 py-3">
-                  <img
-                    src={item.path}
-                    alt={item.name}
-                    className="w-12 h-12 rounded object-cover"
-                  />
-                </td>
-                <td className="px-4 py-3 text-center space-x-2">
-                  <button
-                    onClick={() => deleteFoodItems(item._id)}
-                    className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                  >
-                    Delete
-                  </button>
+  {Array.isArray(foods) && foods.length > 0 ? (
+    foods.map((item, index) => (
+      <tr key={item._id} className="hover:bg-gray-50">
+        <td className="px-4 py-3">{index + 1}</td>
+        <td className="px-4 py-3 font-medium">{item.name}</td>
+        <td className="px-4 py-3">{item.price}</td>
+        <td className="px-4 py-3">{item.description}</td>
+        <td className="px-4 py-3">
+          <img
+            src={item.path}
+            alt={item.name}
+            className="w-12 h-12 rounded object-cover"
+          />
+        </td>
+        <td className="px-4 py-3 text-center space-x-2">
+          <button
+            onClick={() => deleteFoodItems(item._id)}
+            className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+          >
+            Delete
+          </button>
 
-                  <button
-                    onClick={() => router.push(`/restuarant/dashboard/${item._id}`)}
-                    className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-                  >
-                    Edit
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+          <button
+            onClick={() =>
+              router.push(`/restuarant/dashboard/${item._id}`)
+            }
+            className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Edit
+          </button>
+        </td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="6" className="px-4 py-6 text-center text-gray-500">
+        No food items found
+      </td>
+    </tr>
+  )}
+</tbody>
 
         </table>
       </div>

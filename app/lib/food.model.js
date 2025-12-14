@@ -33,3 +33,4 @@ const Food = mongoose.models.foods || mongoose.model("foods", foodSchema);
 
 export default Food;
 
+

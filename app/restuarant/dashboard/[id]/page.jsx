@@ -18,7 +18,7 @@ const EditFoodItems = () => {
 useEffect(() => {
   const fetchFoodItem = async () => {
     try {
-      const res = await fetch(`/api/foods/edit/${id}`);
+      const res = await fetch(`/api/restuarant/foods/edit/${id}`);
       const data = await res.json();
       console.log("Fetched food item:", data);
 
@@ -36,29 +36,29 @@ useEffect(() => {
 }, [id]);
 
 
-  // const handleEditFoodItem = async () => {
-  //   if (!name || !price || !path || !description) {
-  //     setError(true);
-  //     return;
-  //   }
-  //   setError(false);
+  const handleEditFoodItem = async () => {
+    if (!name || !price || !path || !description) {
+      setError(true);
+      return;
+    }
+    setError(false);
 
-  //   try {
-  //     const res = await fetch(`/api/foods/${id}`, {
-  //       method: "PUT",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({ name, price, path, description }),
-  //     });
+    try {
+      const res = await fetch(`/api/restuarant/foods/edit/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, price, path, description }),
+      });
 
-  //     if (res.ok) {
-  //       router.push("/resturant"); 
-  //     } else {
-  //       console.error("Failed to update food item");
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
+      if (res.ok) {
+        router.push("/restuarant/dashboard"); 
+      } else {
+        console.error("Failed to update food item");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -104,7 +104,7 @@ useEffect(() => {
           {error && !description && <span className="text-red-500">Description is required</span>}
 
           <button
-            // onClick={handleEditFoodItem}
+            onClick={handleEditFoodItem}
             className="w-full h-11 bg-orange-600 text-white rounded-md hover:bg-orange-700"
           >
             Update Food Item

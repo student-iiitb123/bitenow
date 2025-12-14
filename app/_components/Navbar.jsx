@@ -38,14 +38,15 @@ const Navbar = () => {
               </li>
               <li>
                 <button
-                  onClick={() => {
-                    localStorage.removeItem("resturantUser");
-                    router.push("/restuarant");
-                  }}
-                  className="text-red-500"
-                >
-                  Logout
-                </button>
+  onClick={() => {
+    localStorage.removeItem("resturantUser");
+    router.push("/restuarant");
+    router.refresh(); 
+  }}
+>
+  Logout
+</button>
+
               </li>
             </>
           ) : (

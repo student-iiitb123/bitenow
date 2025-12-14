@@ -1,19 +1,21 @@
 import { NextResponse } from "next/server";
-import dbConnect from "../../../lib/db";
-import Food from "../../../lib/food.model";
+import dbConnect from "../../../../lib/db";
+import Food from "../../../../lib/food.model";
+import { Types } from "mongoose";
 
-export async function GET(request,content){
-  let id = content.params.id;
+
+export async function GET(request,{params}){
+  const {id} = await params;
   console.log(id);
   let success = false;
   await dbConnect();
-  const result = await Food.find();
+  const result = await Food.find({restro_id:id});
   if(result){
-    success = true;
+    success =true;
   }
-
-  return NextResponse.json({result,success});
+  return NextResponse.json({result,success:true})
 }
+
 
 
 export async function DELETE(request, { params }) {
@@ -27,5 +29,6 @@ export async function DELETE(request, { params }) {
     success: result.deletedCount > 0,
   });
 }
+
 
 

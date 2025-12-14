@@ -11,11 +11,16 @@ await dbConnect();
 }
 
 export async function PUT(request,{params}) {
-
+    
+   let success = false;
     const {id} =await params;
-    const result = await Food.updateOne({_id:id});
+    const payload = await request.json();
+    const result = await Food.findOneAndUpdate({_id:id},payload);
+    if(result){
+        success= true;
+    }
     return NextResponse.json({
-    success: true
+   result,success
   });
 
     
