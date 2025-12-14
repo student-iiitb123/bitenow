@@ -17,7 +17,7 @@ export default function Home() {
   
   
   
-  //     setRestaurants(response.result)
+  
 
   //   }
   // }
