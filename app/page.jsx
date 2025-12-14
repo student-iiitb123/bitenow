@@ -9,7 +9,7 @@ export default function Home() {
   const [area, setArea] = useState([]);
   const [restuarant, setResturant] = useState([]);
 
-  // Load restaurant
+  // Load restaurants
   useEffect(() => {
     loadRestuarant();
   }, []);
