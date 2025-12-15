@@ -56,6 +56,7 @@ export default function Home() {
     console.log(restuarant)
      router.push(`./explore/${restuarant}`)
   }
+  
   return (
     <main className="min-h-screen bg-gradient-to-r from-orange-500 to-orange-600 overflow-hidden">
       <CustomerHeader />
