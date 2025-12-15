@@ -1,8 +1,8 @@
 import React from 'react'
 
 const page = async ({params}) => {
- let name = await params.name;
- console.log(name)
+const {name} =await params
+console.log(name);
   
   return (
     <>
@@ -24,7 +24,7 @@ const page = async ({params}) => {
       {/* HERO SECTION */}
       <section className="relative z-10 flex flex-col items-center text-center px-4 py-20">
         <h1 className="text-white text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight mb-10">
-          {/* {decodeURI(name)} */}
+          {decodeURI(name)}
           
         </h1>
 
