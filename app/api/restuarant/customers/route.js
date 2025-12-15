@@ -46,3 +46,13 @@ export async function GET(request) {
     // Return JSON response
     return NextResponse.json({ return: true, result });
 }
+
+/*
+export async function GET(request){
+let queryParams = request.nexturl.searchParams;
+let filter= {};
+const city = queryparams.get("location")
+filter.city = queryParams.get("location")
+return Nextresponse.json({return=success})
+}
+*/

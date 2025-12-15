@@ -5,7 +5,10 @@ import CustomerHeader from "./_components/CustomerHeader";
 import LocationInput from "./_components/LocationSearchBar";
 import Footer from "./_components/Footer";
 
+import { useRouter } from "next/navigation";
+
 export default function Home() {
+  const router = useRouter();
   const [area, setArea] = useState([]);
   const [restuarant, setResturant] = useState([]);
 
@@ -48,6 +51,11 @@ export default function Home() {
     }
   };
 
+
+  const handleResturant = (restuarant) => {
+    console.log(restuarant)
+     router.push(`./explore/${restuarant}`)
+  }
   return (
     <main className="min-h-screen bg-gradient-to-r from-orange-500 to-orange-600 overflow-hidden">
       <CustomerHeader />
@@ -111,7 +119,9 @@ export default function Home() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {restuarant.map((item, index) => (
-                <div
+                <div onClick={() => {
+                  handleResturant(item.restuarant);
+                }}
                   key={index}
                   className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden cursor-pointer"
                 >
