@@ -107,7 +107,7 @@ export default function Home() {
         <LocationInput loadResturant={loadRestuarant} />
       </div>
 
-      {/* RESTAURA  */}
+       //search bar
       <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 flex-1 border border-[#6F8F73]/30">
         <Search className="w-5 h-5 text-[#6F8F73]" />
         <input
