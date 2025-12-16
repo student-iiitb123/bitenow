@@ -52,9 +52,9 @@ export default function Home() {
   };
 
 
-  const handleResturant = (restuarant) => {
+  const handleResturant = (restuarant,id) => {
     console.log(restuarant)
-     router.push(`./explore/${restuarant}`)
+     router.push('explore/'+restuarant+"?id="+id)
   }
   
   return (
@@ -121,7 +121,7 @@ export default function Home() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {restuarant.map((item, index) => (
                 <div onClick={() => {
-                  handleResturant(item.restuarant);
+                  handleResturant(item.restuarant,item._id);
                 }}
                   key={index}
                   className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden cursor-pointer"
