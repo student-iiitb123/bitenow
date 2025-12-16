@@ -131,7 +131,7 @@ export default function Home() {
                     <span className="text-gray-400 text-sm">Restaurant Image</span>
                   </div>
 
-                  {/* Content */}
+                  /* Content */
                   <div className="p-4">
                     <h3 className="text-lg font-semibold text-gray-800 mb-1">{item.restuarant}</h3>
                     <p className="text-sm text-gray-500 mb-2"> {item.city}</p>
