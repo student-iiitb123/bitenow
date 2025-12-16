@@ -134,7 +134,7 @@ export default function Home() {
                   {/* Content */}
                   <div className="p-4">
                     <h3 className="text-lg font-semibold text-gray-800 mb-1">{item.restuarant}</h3>
-                    <p className="text-sm text-gray-500 mb-2">📍 {item.city}</p>
+                    <p className="text-sm text-gray-500 mb-2"> {item.city}</p>
                     <div className="flex items-center justify-between text-sm">
                       <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full font-medium">
                         {item.email}
