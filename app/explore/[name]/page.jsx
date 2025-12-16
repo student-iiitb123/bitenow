@@ -53,7 +53,7 @@ export default function RestaurantPage() {
         </div>
       </section>
 
-      {/* ===== Food Section ===== */}
+      
       <section className="px-4 py-6">
         <h2 className="text-xl font-bold mb-4">🍽️ Popular Items</h2>
 
