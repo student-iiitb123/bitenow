@@ -41,7 +41,7 @@ export default function RestaurantPage() {
 
   return (
     <main className="min-h-screen bg-gray-50">
-      {/* ===== Restaurant Header ===== */}
+    
       <section className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-8">
         <h1 className="text-3xl font-bold">{decodeURIComponent(restaurant.restuarant)}</h1>
         <p className="text-white/90 mt-1">{restaurant.city}</p>
