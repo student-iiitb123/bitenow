@@ -25,7 +25,7 @@ export default function RestaurantPage() {
       setRestaurant(data.restuarant);
       setFoods(data.food ? [data.food] : []);
     } catch (error) {
-      console.error("Error fetching restaurant:", error);
+      console.error(error);
       setRestaurant(null);
       setFoods([]);
     }
@@ -33,50 +33,70 @@ export default function RestaurantPage() {
 
   if (!restaurant) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        Loading...
+      <div className="min-h-screen flex items-center justify-center text-gray-500">
+        Loading restaurant...
       </div>
     );
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
-    
-      <section className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-8">
-        <h1 className="text-3xl font-bold">{decodeURIComponent(restaurant.restuarant)}</h1>
-        <p className="text-white/90 mt-1">{restaurant.city}</p>
+    <main className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200">
+      
+      {/* Glass Header */}
+      <section className="sticky top-0 z-10 backdrop-blur-xl bg-white/70 border-b border-white/40">
+        <div className="max-w-6xl mx-auto px-6 py-6">
+          <h1 className="text-3xl font-semibold tracking-tight text-gray-900">
+            {decodeURIComponent(restaurant.restuarant)}
+          </h1>
+          <p className="text-gray-500 mt-1">{restaurant.city}</p>
 
-        <div className="mt-2 text-sm space-y-1">
-          <p>📍 {restaurant.address}</p>
-          <p>📞 {restaurant.phone}</p>
-          <p>✉️ {restaurant.email}</p>
+          <div className="mt-3 flex flex-wrap gap-4 text-sm text-gray-600">
+            <span>📍 {restaurant.address}</span>
+            <span>📞 {restaurant.phone}</span>
+            <span>✉️ {restaurant.email}</span>
+          </div>
         </div>
       </section>
 
-      
-      <section className="px-4 py-6">
-        <h2 className="text-xl font-bold mb-4">🍽️ Popular Items</h2>
+      {/* Food Section */}
+      <section className="max-w-6xl mx-auto px-6 py-10">
+        <h2 className="text-xl font-semibold text-gray-900 mb-6">
+          Popular Items
+        </h2>
 
         {foods.length === 0 ? (
-          <p className="text-gray-500 text-sm">No food items available</p>
+          <p className="text-gray-500">No food items available</p>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
             {foods.map((food) => (
               <div
                 key={food._id}
-                className="bg-white rounded shadow p-2 flex flex-col items-center text-center"
+                className="group bg-white/80 backdrop-blur-lg rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
               >
                 <img
                   src={food.path || "/food-placeholder.png"}
                   alt={food.name}
-                  className="w-20 h-20 object-cover rounded mb-1"
+                  className="w-full h-36 object-cover rounded-t-2xl"
                 />
-                <h3 className="text-sm font-semibold">{food.name}</h3>
-                <p className="text-xs text-gray-500">{food.category}</p>
-                <span className="text-sm font-bold mt-1">₹{food.price}</span>
-                <button className="mt-1 px-2 py-0.5 text-xs border border-orange-500 text-orange-500 rounded">
-                  ADD
-                </button>
+
+                <div className="p-4 text-center">
+                  <h3 className="font-medium text-gray-900">
+                    {food.name}
+                  </h3>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    {food.category}
+                  </p>
+
+                  <div className="flex items-center justify-between mt-4">
+                    <span className="font-semibold text-gray-900">
+                      ₹{food.price}
+                    </span>
+
+                    <button className="px-4 py-1.5 text-sm rounded-full bg-orange-500 text-white shadow hover:bg-orange-600 active:scale-95 transition">
+                      ADD
+                    </button>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
