@@ -29,7 +29,7 @@ const AddFoodItems = () => {
 
     const restro_id = restuarantData._id;
 
-    //  API call
+    
     const res = await fetch("http://localhost:3000/api/restuarant/foods", {
       method: "POST",
       headers: {
