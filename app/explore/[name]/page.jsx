@@ -1,60 +1,87 @@
 "use client";
 
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 
-const Page = () => {
-  const params = useParams();
+export default function RestaurantPage() {
+  const { name } = useParams();
   const searchParams = useSearchParams();
-
-  const name = params.name;
   const id = searchParams.get("id");
 
+  const [restaurant, setRestaurant] = useState(null);
+  const [foods, setFoods] = useState([]);
+
   useEffect(() => {
-    if (id) {
-      loadRestaurantDetails();
-    }
+    if (id) loadData();
   }, [id]);
 
-  const loadRestaurantDetails = async () => {
+  const loadData = async () => {
     try {
-      const response = await fetch(
-       `http://localhost:3000/api/restuarant/customers/${id}`
+      const res = await fetch(
+        `http://localhost:3000/api/restuarant/customers/${id}`
       );
-      const data = await response.json();
-      console.log(data);
+      const data = await res.json();
+
+      setRestaurant(data.restuarant);
+      setFoods(data.food ? [data.food] : []);
     } catch (error) {
-      console.error("Fetch error:", error);
+      console.error("Error fetching restaurant:", error);
+      setRestaurant(null);
+      setFoods([]);
     }
   };
 
+  if (!restaurant) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Loading...
+      </div>
+    );
+  }
+
   return (
-    <main className="relative min-h-screen overflow-hidden bg-gradient-to-r from-orange-500 to-orange-600">
-      {/* Decorative Images */}
-      <img
-        src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/portal/testing/seo-home/Veggies_new.png"
-        className="hidden md:block absolute left-0 top-32 w-56 opacity-90"
-        alt="Veggies"
-      />
+    <main className="min-h-screen bg-gray-50">
+      {/* ===== Restaurant Header ===== */}
+      <section className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-8">
+        <h1 className="text-3xl font-bold">{decodeURIComponent(restaurant.restuarant)}</h1>
+        <p className="text-white/90 mt-1">{restaurant.city}</p>
 
-      <img
-        src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/portal/testing/seo-home/Sushi_replace.png"
-        className="hidden md:block absolute right-0 top-20 w-60 opacity-90"
-        alt="Sushi"
-      />
+        <div className="mt-2 text-sm space-y-1">
+          <p>📍 {restaurant.address}</p>
+          <p>📞 {restaurant.phone}</p>
+          <p>✉️ {restaurant.email}</p>
+        </div>
+      </section>
 
-      {/* HERO SECTION */}
-      <section className="relative z-10 flex flex-col items-center justify-center text-center px-4 py-24">
-        <h1 className="text-white text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight mb-4">
-          {decodeURIComponent(name)}
-        </h1>
+      {/* ===== Food Section ===== */}
+      <section className="px-4 py-6">
+        <h2 className="text-xl font-bold mb-4">🍽️ Popular Items</h2>
 
-        <p className="text-white/90 max-w-xl text-sm sm:text-base">
-          Restaurant ID: {id}
-        </p>
+        {foods.length === 0 ? (
+          <p className="text-gray-500 text-sm">No food items available</p>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+            {foods.map((food) => (
+              <div
+                key={food._id}
+                className="bg-white rounded shadow p-2 flex flex-col items-center text-center"
+              >
+                <img
+                  src={food.path || "/food-placeholder.png"}
+                  alt={food.name}
+                  className="w-20 h-20 object-cover rounded mb-1"
+                />
+                <h3 className="text-sm font-semibold">{food.name}</h3>
+                <p className="text-xs text-gray-500">{food.category}</p>
+                <span className="text-sm font-bold mt-1">₹{food.price}</span>
+                <button className="mt-1 px-2 py-0.5 text-xs border border-orange-500 text-orange-500 rounded">
+                  ADD
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
     </main>
   );
-};
-
-export default Page;
+}
