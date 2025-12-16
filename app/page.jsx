@@ -101,7 +101,7 @@ export default function Home() {
     {/* SEARCH BAR */}
     <div className="mt-10 flex flex-col sm:flex-row gap-4 bg-[#ffffff80] backdrop-blur-lg rounded-3xl p-4 shadow-lg">
       
-      {/* LOCATION INPUT */}
+    
       <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 flex-1 border border-[#6F8F73]/30">
         <MapPin className="w-5 h-5 text-[#6F8F73]" />
         <LocationInput loadResturant={loadRestuarant} />
