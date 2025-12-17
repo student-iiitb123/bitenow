@@ -8,7 +8,7 @@ const CustomerHeader = ({ cartdata }) => {
   const [cartNumber, setCartNumber] = useState(0);
   const [error, setError] = useState("");
 
-  // Load cart on page refresh
+  //Load cart on page refresh
   useEffect(() => {
     const storedCart = localStorage.getItem("cart");
     if (storedCart) {
