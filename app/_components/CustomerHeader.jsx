@@ -41,7 +41,7 @@ const CustomerHeader = ({ cartdata }) => {
         return prevCart; //  block add
       }
 
-      //  Same restaurant → allow
+      //  Same restaurant
       const updatedCart = [...prevCart, cartdata];
       localStorage.setItem("cart", JSON.stringify(updatedCart));
       setCartNumber(updatedCart.length);
