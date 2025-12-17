@@ -6,7 +6,6 @@ import LocationInput from "./_components/LocationSearchBar";
 import Footer from "./_components/Footer";
 import { useRouter } from "next/navigation";
 import { MapPin, Search } from "lucide-react";
-
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -50,7 +49,7 @@ export default function Home() {
 
     const res = await fetch(url);
     const data = await res.json();
-    if (data.return) setResturant(data.result);
+    if (data?.return) setResturant(data.result);
   };
 
   const loadLocations = async () => {
@@ -58,7 +57,7 @@ export default function Home() {
   };
 
   const handleResturant = (restuarant, id) => {
-    router.push("explore/" + restuarant + "?id=" + id);
+    router.push("/explore/" + restuarant + "?id=" + id);
   };
 
   return (
@@ -66,109 +65,107 @@ export default function Home() {
       <CustomerHeader />
 
       {/* HERO SECTION */}
-      {/* HERO SECTION */}
-<motion.section
-  initial={{ opacity: 0, y: 50 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 1 }}
-  className="relative flex flex-col items-center text-center px-6 pt-32 pb-40 overflow-hidden"
->
-  {/* VIDEO BACKGROUND */}
-  <video
-    autoPlay
-    loop
-    muted
-    className="absolute top-0 left-0 w-full h-full object-cover z-0"
-  >
-    <source src="/vidios/6288300-sd_960_540_25fps.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
+      <motion.section
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+        className="relative flex flex-col items-center text-center px-6 pt-32 pb-40 overflow-hidden"
+      >
+        {/* VIDEO BG */}
+        <video
+          autoPlay
+          loop
+          muted
+          className="absolute inset-0 w-full h-full object-cover z-0"
+        >
+          <source
+            src="/vidios/6288300-sd_960_540_25fps.mp4"
+            type="video/mp4"
+          />
+        </video>
 
-  {/* HERO CONTENT */}
-  <div className="relative z-10 w-full max-w-3xl">
-    <h1 className="text-4xl md:text-6xl font-semibold leading-tight tracking-tight text-white">
-      Delicious food delivered <br />
-      <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6F8F73] to-[#4F6B57]">
-        Fresh. Fast. BiteNow.
-      </span>
-    </h1>
+        <div className="relative z-10 w-full max-w-3xl">
+          <h1 className="text-4xl md:text-6xl font-semibold text-white">
+            Delicious food delivered <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6F8F73] to-[#4F6B57]">
+              Fresh. Fast. BiteNow.
+            </span>
+          </h1>
 
-    <p className="mt-4 text-[#F4F1EC] text-base md:text-lg">
-      Discover hand-picked restaurants and enjoy a calm, premium food
-      delivery experience.
-    </p>
+          <p className="mt-4 text-[#F4F1EC]">
+            Discover hand-picked restaurants and enjoy a calm, premium food
+            delivery experience.
+          </p>
 
-    {/* SEARCH BAR */}
-    <div className="mt-10 flex flex-col sm:flex-row gap-4 bg-[#ffffff80] backdrop-blur-lg rounded-3xl p-4 shadow-lg">
-      
-    
-      <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 flex-1 border border-[#6F8F73]/30">
-        <MapPin className="w-5 h-5 text-[#6F8F73]" />
-        <LocationInput loadResturant={loadRestuarant} />
-      </div>
+          {/* SEARCH */}
+          <div className="mt-10 flex flex-col sm:flex-row gap-4 bg-[#ffffff80] backdrop-blur-lg rounded-3xl p-4">
+            <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 flex-1">
+              <MapPin className="w-5 h-5 text-[#6F8F73]" />
+              <LocationInput loadResturant={loadRestuarant} />
+            </div>
 
-      
-      <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 flex-1 border border-[#6F8F73]/30">
-        <Search className="w-5 h-5 text-[#6F8F73]" />
-        <input
-          type="text"
-          placeholder="Search restaurants or dishes"
-          onChange={(e) =>
-            loadRestuarant({ restuarant: e.target.value })
-          }
-          className="w-full outline-none text-[#2F3E34] placeholder-[#7A857C]"
-        />
-      </div>
-    </div>
-  </div>
-</motion.section>
+            <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 flex-1">
+              <Search className="w-5 h-5 text-[#6F8F73]" />
+              <input
+                type="text"
+                placeholder="Search restaurants"
+                onChange={(e) =>
+                  loadRestuarant({ restuarant: e.target.value })
+                }
+                className="w-full outline-none"
+              />
+            </div>
+          </div>
+        </div>
+      </motion.section>
 
-
-
-      {/* RESTAURANTS */}
-      <section className="relative z-10 bg-[#F4F1EC] rounded-t-[4rem] px-6 py-20">
+      {/* RESTAURANTS PREVIEW */}
+      <section className="relative z-10 py-24 bg-[#F4F1EC] rounded-t-[4rem] px-6">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-semibold mb-12">
-            Popular Restaurants Near You
-          </h2>
+          <div className="flex items-end justify-between mb-10">
+            <h2 className="text-2xl font-semibold">
+              Popular Restaurants Near You
+            </h2>
+
+            {/* 🔥 NAVIGATE TO PAGE */}
+            <button
+              onClick={() => router.push("/restuarants")}
+              className="border border-black px-5 py-2 rounded-full
+                         hover:bg-black hover:text-white transition"
+            >
+              See all Restaurants →
+            </button>
+          </div>
 
           {restuarant.length === 0 ? (
-            <p className="text-[#6B7280]">No restaurants found</p>
+            <p className="text-gray-500">No restaurants found</p>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-              {restuarant.map((item, index) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {restuarant.slice(0, 8).map((item, index) => (
                 <div
                   key={index}
                   ref={(el) => (cardsRef.current[index] = el)}
                   onClick={() =>
                     handleResturant(item.restuarant, item._id)
                   }
-                  className="group cursor-pointer bg-[#E8E2D8] rounded-3xl overflow-hidden border border-[#6F8F73]/20 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+                  className="cursor-pointer bg-white rounded-xl overflow-hidden
+                             border hover:shadow-lg transition"
                 >
-                  {/* IMAGE */}
-                  <div className="h-48 bg-gradient-to-br from-[#8FAE8B] to-[#6F8F73] flex items-center justify-center">
-                    <span className="text-white text-sm opacity-80">
-                      Restaurant Image
-                    </span>
-                  </div>
+                  <img
+                    src={item.image || "/assets/img/home-1/visit1.jpg"}
+                    className="h-48 w-full object-cover"
+                  />
 
-                  {/* CONTENT */}
-                  <div className="p-6">
-                    <h3 className="text-xl font-semibold mb-1">
+                  <div className="p-4">
+                    <h6 className="font-semibold truncate">
                       {item.restuarant}
-                    </h3>
-                    <p className="text-sm text-[#6B7280] mb-4">
-                      {item.city}
+                    </h6>
+                    <p className="text-sm text-gray-600">
+                      ⭐ {item.rating || "4.8"} • ⏱ {item.time || "20-30 mins"}
                     </p>
-
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs px-3 py-1 rounded-full bg-[#6F8F73]/20 text-[#4F6B57] font-medium">
-                        OPEN
-                      </span>
-                      <span className="text-sm text-[#6B7280]">
-                        ⏱ 25–30 min
-                      </span>
-                    </div>
+                    <p className="text-sm text-gray-600">
+                      📍 {item.city}
+                    </p>
                   </div>
                 </div>
               ))}

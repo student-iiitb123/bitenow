@@ -1,15 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { MapPin, Phone, Mail, Star } from "lucide-react";
 
 export default function RestaurantPage() {
-  const { name } = useParams();
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
 
   const [restaurant, setRestaurant] = useState(null);
   const [foods, setFoods] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (id) loadData();
@@ -17,21 +18,25 @@ export default function RestaurantPage() {
 
   const loadData = async () => {
     try {
+      setLoading(true);
       const res = await fetch(
         `http://localhost:3000/api/restuarant/customers/${id}`
       );
-      const data = await res.json();
+      if (!res.ok) throw new Error("Failed to fetch");
 
-      setRestaurant(data.restuarant);
-      setFoods(data.food ? [data.food] : []);
-    } catch (error) {
-      console.error(error);
+      const data = await res.json();
+      setRestaurant(data.restuarant || null);
+      setFoods(Array.isArray(data.food) ? data.food : []);
+    } catch (err) {
+      console.error(err);
       setRestaurant(null);
       setFoods([]);
+    } finally {
+      setLoading(false);
     }
   };
 
-  if (!restaurant) {
+  if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center text-gray-500">
         Loading restaurant...
@@ -39,63 +44,126 @@ export default function RestaurantPage() {
     );
   }
 
-  return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200">
-      
-      {/* Glass Header */}
-      <section className="sticky top-0 z-10 backdrop-blur-xl bg-white/70 border-b border-white/40">
-        <div className="max-w-6xl mx-auto px-6 py-6">
-          <h1 className="text-3xl font-semibold tracking-tight text-gray-900">
-            {decodeURIComponent(restaurant.restuarant)}
-          </h1>
-          <p className="text-gray-500 mt-1">{restaurant.city}</p>
+  if (!restaurant) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-red-500">
+        Restaurant not found
+      </div>
+    );
+  }
 
-          <div className="mt-3 flex flex-wrap gap-4 text-sm text-gray-600">
-            <span>📍 {restaurant.address}</span>
-            <span>📞 {restaurant.phone}</span>
-            <span>✉️ {restaurant.email}</span>
+  return (
+    <main className="bg-[#f8f8f8] min-h-screen">
+      {/* ================= HERO ================= */}
+      <section className="relative h-[380px]">
+        <img
+          src={restaurant.image || "/restaurant-placeholder.jpg"}
+          alt={restaurant.restuarant}
+          className="w-full h-full object-cover"
+        />
+
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black/40" />
+
+        {/* Glass Card */}
+        <div
+          className="absolute bottom-6 left-1/2 -translate-x-1/2
+                     w-[90%] md:w-[70%]
+                     bg-white/80 backdrop-blur-xl
+                     rounded-3xl p-6 shadow-xl"
+        >
+          <h1 className="text-3xl font-bold text-gray-900">
+            {restaurant.restuarant}
+          </h1>
+          <p className="text-gray-600 mt-1">{restaurant.address}</p>
+
+          <div className="flex flex-wrap gap-5 mt-3 text-sm text-gray-700">
+            <span className="flex items-center gap-1">
+              <MapPin size={16} /> {restaurant.city}
+            </span>
+            <span className="flex items-center gap-1">
+              <Star size={16} className="text-yellow-500" /> 4.4
+            </span>
+            <span className="flex items-center gap-1">
+              <Phone size={16} /> {restaurant.phone}
+            </span>
+            <span className="flex items-center gap-1">
+              <Mail size={16} /> {restaurant.email}
+            </span>
           </div>
         </div>
       </section>
 
-      {/* Food Section */}
-      <section className="max-w-6xl mx-auto px-6 py-10">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">
-          Popular Items
-        </h2>
+      {/* ================= CATEGORY BAR ================= */}
+      <section className="sticky top-0 z-20 bg-white border-b">
+        <div className="max-w-5xl mx-auto px-4 py-3 flex gap-6 overflow-x-auto">
+          {["Recommended", "Chawal", "Chicken", "Paneer"].map((cat) => (
+            <button
+              key={cat}
+              className="text-sm font-medium whitespace-nowrap
+                         text-gray-600 hover:text-orange-600"
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+      </section>
+
+      {/* ================= MENU ================= */}
+      <section className="max-w-5xl mx-auto px-4 py-10">
+        <h2 className="text-2xl font-semibold mb-6">Recommended</h2>
 
         {foods.length === 0 ? (
           <p className="text-gray-500">No food items available</p>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+          <div className="space-y-6">
             {foods.map((food) => (
               <div
                 key={food._id}
-                className="group bg-white/80 backdrop-blur-lg rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                className="flex justify-between gap-4 p-5
+                           bg-white rounded-2xl shadow-sm
+                           hover:shadow-md transition"
               >
-                <img
-                  src={food.path || "/food-placeholder.png"}
-                  alt={food.name}
-                  className="w-full h-36 object-cover rounded-t-2xl"
-                />
-
-                <div className="p-4 text-center">
-                  <h3 className="font-medium text-gray-900">
+                {/* LEFT */}
+                <div className="flex-1">
+                  <h3 className="font-semibold text-gray-900">
                     {food.name}
                   </h3>
-                  <p className="text-xs text-gray-500 mt-0.5">
+
+                  <p className="text-sm text-gray-500 mt-1">
                     {food.category}
                   </p>
 
-                  <div className="flex items-center justify-between mt-4">
-                    <span className="font-semibold text-gray-900">
+                  <div className="flex items-center gap-2 mt-2">
+                    <span className="font-medium text-gray-900">
                       ₹{food.price}
                     </span>
-
-                    <button className="px-4 py-1.5 text-sm rounded-full bg-orange-500 text-white shadow hover:bg-orange-600 active:scale-95 transition">
-                      ADD
-                    </button>
+                    <span className="text-xs text-gray-400 line-through">
+                      ₹{food.price + 40}
+                    </span>
                   </div>
+
+                  <p className="text-sm text-gray-600 mt-2 max-w-md">
+                    {food.description ||
+                      "Chef special preparation with rich taste"}
+                  </p>
+                </div>
+
+                {/* RIGHT */}
+                <div className="relative w-28 h-24 shrink-0">
+                  <img
+                    src={food.path || "/food-placeholder.png"}
+                    alt={food.name}
+                    className="w-full h-full object-cover rounded-xl"
+                  />
+                  <button
+                    className="absolute -bottom-3 left-1/2 -translate-x-1/2
+                               bg-white text-green-600 border
+                               px-4 py-1 text-sm rounded-full
+                               shadow hover:bg-green-50"
+                  >
+                    ADD
+                  </button>
                 </div>
               </div>
             ))}

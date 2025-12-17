@@ -9,7 +9,7 @@ export async function GET(request,{params}){
     console.log(id);
     await dbConnect();
     const restuarant = await User.findOne({_id:id});
-    const food= await Food.findOne({
+    const food= await Food.find({
 restro_id:id})
       
    return NextResponse.json({restuarant,food,success})
