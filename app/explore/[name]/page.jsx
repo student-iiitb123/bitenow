@@ -11,7 +11,7 @@ export default function RestaurantPage() {
   const [restaurant, setRestaurant] = useState(null);
   const [foods, setFoods] = useState([]);
   const [loading, setLoading] = useState(true);
-  //make Sta 
+  //make 
   const[cart,setCart] = useState();
 
 
