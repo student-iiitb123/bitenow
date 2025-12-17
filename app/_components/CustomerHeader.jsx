@@ -25,7 +25,7 @@ const CustomerHeader = ({ cartdata }) => {
     setError("");
 
     setCartItems((prevCart) => {
-      //  Cart empty → allow
+      //  Cart empty 
       if (prevCart.length === 0) {
         localStorage.setItem("cart", JSON.stringify([cartdata]));
         setCartNumber(1);
