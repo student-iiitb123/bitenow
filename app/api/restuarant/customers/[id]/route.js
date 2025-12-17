@@ -8,9 +8,9 @@ export async function GET(request,{params}){
     let success = false;
     console.log(id);
     await dbConnect();
-    const restuarant = await User.findOne({_id:id});
-    const food= await Food.findOne({
-restro_id:id})
+    const restuarant = await User.findById(id);
+
+ const food = await Food.find({ restro_id: id });
       
    return NextResponse.json({restuarant,food,success})
 }
