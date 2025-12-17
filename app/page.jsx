@@ -13,6 +13,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+//Home Section
+
 export default function Home() {
   const router = useRouter();
   const [restuarant, setResturant] = useState([]);
@@ -150,7 +152,7 @@ export default function Home() {
                       Restaurant Image
                     </span>
                   </div>
-
+                 
                   {/* CONTENT */}
                   <div className="p-6">
                     <h3 className="text-xl font-semibold mb-1">
