@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import CustomerHeader from "./_components/CustomerHeader";
+import Footer from "./_components/Footer";
 
 export const metadata: Metadata = {
   title: "BiteNow",
@@ -14,7 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+<CustomerHeader />
         {children}
+
+        <Footer />
       </body>
     </html>
   );
