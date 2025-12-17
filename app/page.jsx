@@ -12,6 +12,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+//Home Section
+
 export default function Home() {
   const router = useRouter();
   const [restuarant, setResturant] = useState([]);
@@ -65,6 +67,7 @@ export default function Home() {
       <CustomerHeader />
 
       {/* HERO SECTION */}
+<<<<<<< HEAD
       <motion.section
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -83,6 +86,24 @@ export default function Home() {
             type="video/mp4"
           />
         </video>
+=======
+<motion.section
+  initial={{ opacity: 0, y: 50 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 1 }}
+  className="relative flex flex-col items-center text-center px-6 pt-32 pb-40 overflow-hidden"
+>
+  {/* VIDEO BACKGROUND */}
+  <video
+    autoPlay
+    loop
+    muted
+    className="absolute top-0 left-0 w-full h-full object-cover z-0"
+  >
+    <source src="/vidios/6288300-sd_960_540_25fps.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+>>>>>>> 85c60063cff4d2b878cb36267c194ad576268945
 
         <div className="relative z-10 w-full max-w-3xl">
           <h1 className="text-4xl md:text-6xl font-semibold text-white">
@@ -151,6 +172,7 @@ export default function Home() {
                   className="cursor-pointer bg-white rounded-xl overflow-hidden
                              border hover:shadow-lg transition"
                 >
+<<<<<<< HEAD
                   <img
                     src={item.image || "/assets/img/home-1/visit1.jpg"}
                     className="h-48 w-full object-cover"
@@ -158,6 +180,18 @@ export default function Home() {
 
                   <div className="p-4">
                     <h6 className="font-semibold truncate">
+=======
+                  {/* IMAGE */}
+                  <div className="h-48 bg-gradient-to-br from-[#8FAE8B] to-[#6F8F73] flex items-center justify-center">
+                    <span className="text-white text-sm opacity-80">
+                      Restaurant Image
+                    </span>
+                  </div>
+                 
+                  {/* CONTENT */}
+                  <div className="p-6">
+                    <h3 className="text-xl font-semibold mb-1">
+>>>>>>> 85c60063cff4d2b878cb36267c194ad576268945
                       {item.restuarant}
                     </h6>
                     <p className="text-sm text-gray-600">
