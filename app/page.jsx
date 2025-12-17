@@ -66,7 +66,6 @@ export default function Home() {
       <CustomerHeader />
 
       {/* HERO SECTION */}
-      {/* HERO SECTION */}
 <motion.section
   initial={{ opacity: 0, y: 50 }}
   animate={{ opacity: 1, y: 0 }}
