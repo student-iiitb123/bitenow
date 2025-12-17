@@ -62,7 +62,7 @@ const CustomerHeader = ({ cartdata }) => {
             Cart ({cartNumber})
           </Link>
 
-          {/*  Error message */}
+          
           {error && (
             <p className="absolute top-full mt-2 text-sm text-red-500">
               {error}
