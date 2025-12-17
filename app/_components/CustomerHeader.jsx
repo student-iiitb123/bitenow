@@ -38,7 +38,7 @@ const CustomerHeader = ({ cartdata }) => {
 
       if (existingRestaurantId !== newRestaurantId) {
         setError("You can order from only one restaurant at a time.");
-        return prevCart; //  block add
+        return prevCart; 
       }
 
       //  Same restaurant
