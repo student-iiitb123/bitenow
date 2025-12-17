@@ -18,7 +18,7 @@ const CustomerHeader = ({ cartdata }) => {
     }
   }, []);
 
-  // Add to cart logic
+  //add to cart logic
   useEffect(() => {
     if (!cartdata) return;
 
