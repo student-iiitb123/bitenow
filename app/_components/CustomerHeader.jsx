@@ -32,7 +32,7 @@ const CustomerHeader = ({ cartdata }) => {
         return [cartdata];
       }
 
-      //  Check restaurant restriction
+      //  Check restaurant 
       const existingRestaurantId = prevCart[0].restro_id;
       const newRestaurantId = cartdata.restro_id;
 
