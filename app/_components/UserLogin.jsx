@@ -48,7 +48,7 @@ export default function UserLogin() {
           Login to continue
         </p>
 
-        {/* ✅ ONLY onSubmit */}
+        {/* ONLY onSubmit */}
         <form onSubmit={userLogin} className="space-y-4">
 
           <div className="relative">
