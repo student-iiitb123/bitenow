@@ -60,7 +60,7 @@ useEffect(() => {
   setCartStorage(storedCart);
 }, []);
   // const [cartIds,setcartIds] = useState(() => cartStorage.map((item) => {
-  //   return item._id;
+  
   
 
 
