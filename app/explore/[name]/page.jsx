@@ -43,6 +43,7 @@ const removefromCart = (id) => {
         return () => window.removeEventListener("storage", handleStorageChange);
       }, []);
       
+      
 
 useEffect(() => {
   if (Array.isArray(cartStorage)) {

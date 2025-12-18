@@ -2,9 +2,15 @@
 
 import React, { useEffect, useState } from "react";
 import CustomerHeader from "../_components/CustomerHeader";
+import { useRouter } from "next/navigation";
+
+
+
+
 
 const CartPage = () => {
   const [cart, setCart] = useState([]);
+  const router = useRouter();
 
   // Load cart from localStorage
   useEffect(() => {
@@ -72,7 +78,7 @@ const CartPage = () => {
 
               {/* Checkout Button */}
               <div className="mt-4 flex justify-end">
-                <button className="px-6 py-3 bg-green-700 text-white rounded-xl font-semibold hover:bg-green-800 transition">
+                <button onClick={() => router.push("/checkout")} className="px-6 py-3 bg-green-700 text-white rounded-xl font-semibold hover:bg-green-800 transition">
                   Proceed to Checkout
                 </button>
               </div>
