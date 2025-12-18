@@ -21,7 +21,7 @@ const CheckoutPage = () => {
   );
 
   const handleConfirmOrder = () => {
-    alert("Order placed successfully 🚀");
+    alert("Order placed successfully ");
     localStorage.removeItem("cart");
     router.push("/");
   };
@@ -63,10 +63,10 @@ const CheckoutPage = () => {
                 <div className="flex justify-between items-center mt-6 flex-wrap gap-3">
                   <div className="flex gap-3">
                     <button className="px-4 py-2 border rounded-full text-sm">
-                      🏠 Home
+                       Home
                     </button>
                     <button className="px-4 py-2 border rounded-full text-sm">
-                      🏢 Office
+                       Office
                     </button>
                   </div>
                   <button className="px-6 py-2 bg-green-700 text-white rounded-xl hover:bg-green-800">

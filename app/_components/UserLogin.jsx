@@ -11,7 +11,7 @@ export default function UserLogin() {
   const [password, setPassword] = useState("");
 
   const userLogin = async (e) => {
-    e.preventDefault(); // ✅ IMPORTANT
+    e.preventDefault(); //  IMPORTANT
 
     const response = await fetch("/api/users", {
       method: "POST",

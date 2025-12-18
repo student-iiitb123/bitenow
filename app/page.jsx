@@ -126,7 +126,7 @@ export default function Home() {
               Popular Restaurants Near You
             </h2>
 
-            {/* 🔥 NAVIGATE TO PAGE */}
+            {/*  NAVIGATE TO PAGE */}
             <button
               onClick={() => router.push("/restuarants")}
               className="border border-black px-5 py-2 rounded-full
@@ -163,10 +163,10 @@ export default function Home() {
                       {item.restuarant}
                     </h3>
                     <p className="text-sm text-gray-600">
-                      ⭐ {item.rating || "4.8"} • ⏱ {item.time || "20-30 mins"}
+                       {item.rating || "4.8"} • ⏱ {item.time || "20-30 mins"}
                     </p>
                     <p className="text-sm text-gray-600">
-                      📍 {item.city}
+                       {item.city}
                     </p>
                   </div>
                 </div>
