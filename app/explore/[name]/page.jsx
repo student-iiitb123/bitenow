@@ -60,14 +60,7 @@ useEffect(() => {
   setCartStorage(storedCart);
 }, []);
   
-  
-  
-
-
-
- 
-
-  const handleclick = (food) => {
+      const handleclick = (food) => {
      setCart(food)
      const updatedCart = [...cartStorage, food];
   setCartStorage(updatedCart);

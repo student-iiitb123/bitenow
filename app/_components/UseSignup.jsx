@@ -102,7 +102,7 @@ const UserSignUp = () => {
         {/* Address */}
         <Input icon={Home} placeholder="Address" value={address} setValue={setAddress} />
 
-        {/* Mobile */}
+      
         <Input icon={Phone} type="tel" placeholder="Mobile Number" value={mobile} setValue={setMobile} />
 
         <button
