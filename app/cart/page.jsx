@@ -12,7 +12,7 @@ const CartPage = () => {
     setCart(data);
   }, []);
 
-  // Remove item f
+  // Remove item 
   const removeFromCart = (id) => {
     const updatedCart = cart.filter((item) => item._id !== id);
     setCart(updatedCart);
