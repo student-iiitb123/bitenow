@@ -59,7 +59,7 @@ useEffect(() => {
   const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
   setCartStorage(storedCart);
 }, []);
-  // cons
+  
   
   
 
