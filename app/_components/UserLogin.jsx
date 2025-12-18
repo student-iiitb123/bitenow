@@ -4,13 +4,13 @@ import { useState } from "react";
 import { Mail, Lock, LogIn } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export default function Login() {
+export default function UserLogin() {
   const router = useRouter();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async (e) => {
+  const userLogin = async (e) => {
     e.preventDefault(); // ✅ IMPORTANT
 
     const response = await fetch("/api/users", {
@@ -38,7 +38,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F7F4EE]">
+    <div className="">
       <div className="w-[380px] bg-[#EFE9DD] rounded-2xl shadow-xl p-8">
 
         <h1 className="text-2xl font-semibold text-center text-[#2F3E34]">
@@ -49,7 +49,7 @@ export default function Login() {
         </p>
 
         {/* ✅ ONLY onSubmit */}
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={userLogin} className="space-y-4">
 
           <div className="relative">
             <Mail className="absolute left-4 top-3.5 text-gray-500" size={18} />

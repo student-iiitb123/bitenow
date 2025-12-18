@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 
 
-const Login = () => {
+const RestuarantLogin = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -81,4 +81,5 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default RestuarantLogin;
+

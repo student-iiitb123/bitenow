@@ -1,8 +1,10 @@
 "use client"
 
 import { useState } from "react"
-import Login from "../auth/Login.jsx"
-import Signup from "../auth/Signup.jsx"
+
+
+import RestuarantLogin from "../_components/RestuarantLogin.jsx"
+import RestuarantSignup from "../_components/RestuarantSignup.jsx"
 
 
 const Page = () => {
@@ -15,7 +17,7 @@ const Page = () => {
 
   return (
     <div className="flex flex-col items-center justify-center mt-10 gap-4">
-      {toggle ? <Login /> : <Signup />}
+      {toggle ? <RestuarantLogin /> : <RestuarantSignup />}
 
       <button
         onClick={handleToggle}

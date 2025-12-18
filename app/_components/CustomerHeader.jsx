@@ -140,7 +140,7 @@ const CustomerHeader = ({ cartdata ,removecartdata}) => {
             <>
               <li>
                 <Link
-                  href="/login"
+                  href="/user-auth"
                   className="px-4 py-2 border border-green-700 text-green-700 rounded-full hover:bg-green-700 hover:text-white transition"
                 >
                   Login
@@ -148,7 +148,7 @@ const CustomerHeader = ({ cartdata ,removecartdata}) => {
               </li>
               <li>
                 <Link
-                  href="/signup"
+                  href="/user-auth"
                   className="px-4 py-2 bg-green-700 text-white rounded-full hover:bg-green-800 transition"
                 >
                   Sign Up

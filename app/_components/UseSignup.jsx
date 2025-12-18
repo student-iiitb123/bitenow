@@ -24,7 +24,7 @@ const UserSignUp = () => {
 
   const router = useRouter()
 
-  const handleSignUp = async (e) => {
+  const userSignUp = async (e) => {
     e.preventDefault()
 
     if (password !== confirmPassword) {
@@ -69,11 +69,11 @@ const UserSignUp = () => {
   return (
 
 
-    <div className="min-h-screen flex items-center justify-center bg-[#F4F1EC] px-4">
+    <div className="">
       
       <form
-        onSubmit={handleSignUp}
-        className="w-full max-w-md bg-[#E8E2D8]/80 backdrop-blur-xl p-8 rounded-2xl shadow-xl space-y-4"
+        onSubmit={userSignUp}
+        className=""
       >
         <div className="text-center mb-3">
           <h2 className="text-2xl font-semibold text-[#2F3E34]">

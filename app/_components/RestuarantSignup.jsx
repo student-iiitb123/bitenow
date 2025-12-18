@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
-const Signup = () => {
+const RestuarantSignup = () => {
   
   const router = useRouter();
 
@@ -52,30 +52,41 @@ const handleSubmit = async (e) => {
 };
 
 
-  return (
-    <>
-      <div className="text-center my-4">
-        <h1 className="text-2xl font-semibold">Signup Page</h1>
+ return (
+  <div className="min-h-screen flex items-center justify-center bg-[#F7F4EE] px-4">
+    <div className="w-full max-w-md">
+      
+      {/* Heading */}
+      <div className="text-center mb-6">
+        <h1 className="text-2xl font-semibold text-[#2F3E34]">
+          Create Restaurant Account
+        </h1>
+        <p className="text-sm text-gray-500 mt-1">
+          Sign up to get started
+        </p>
       </div>
 
+      {/* Form */}
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-3 items-center w-full"
+        className="flex flex-col gap-4"
       >
         <input
           type="text"
           placeholder="Full Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-72 h-10 px-3 border border-gray-400 rounded-md"
+          className="w-full h-12 px-4 rounded-xl bg-[#F4F1EC] outline-none focus:ring-2 focus:ring-[#6F8F73]/40"
+          required
         />
 
         <input
           type="text"
-          placeholder="Restuarant"
+          placeholder="Restaurant Name"
           value={restuarant}
           onChange={(e) => setRestuarant(e.target.value)}
-          className="w-72 h-10 px-3 border border-gray-400 rounded-md"
+          className="w-full h-12 px-4 rounded-xl bg-[#F4F1EC] outline-none focus:ring-2 focus:ring-[#6F8F73]/40"
+          required
         />
 
         <input
@@ -83,7 +94,8 @@ const handleSubmit = async (e) => {
           placeholder="City"
           value={city}
           onChange={(e) => setCity(e.target.value)}
-          className="w-72 h-10 px-3 border border-gray-400 rounded-md"
+          className="w-full h-12 px-4 rounded-xl bg-[#F4F1EC] outline-none focus:ring-2 focus:ring-[#6F8F73]/40"
+          required
         />
 
         <input
@@ -91,23 +103,26 @@ const handleSubmit = async (e) => {
           placeholder="Address"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
-          className="w-72 h-10 px-3 border border-gray-400 rounded-md"
+          className="w-full h-12 px-4 rounded-xl bg-[#F4F1EC] outline-none focus:ring-2 focus:ring-[#6F8F73]/40"
+          required
         />
 
         <input
-          type="number"
+          type="tel"
           placeholder="Contact Number"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
-          className="w-72 h-10 px-3 border border-gray-400 rounded-md"
+          className="w-full h-12 px-4 rounded-xl bg-[#F4F1EC] outline-none focus:ring-2 focus:ring-[#6F8F73]/40"
+          required
         />
 
         <input
           type="email"
-          placeholder="Email"
+          placeholder="Email Address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-72 h-10 px-3 border border-gray-400 rounded-md"
+          className="w-full h-12 px-4 rounded-xl bg-[#F4F1EC] outline-none focus:ring-2 focus:ring-[#6F8F73]/40"
+          required
         />
 
         <input
@@ -115,18 +130,21 @@ const handleSubmit = async (e) => {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-72 h-10 px-3 border border-gray-400 rounded-md"
+          className="w-full h-12 px-4 rounded-xl bg-[#F4F1EC] outline-none focus:ring-2 focus:ring-[#6F8F73]/40"
+          required
         />
 
         <button
           type="submit"
-          className="mt-3 w-32 h-10 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          className="mt-2 h-12 w-full bg-[#6F8F73] text-white rounded-xl font-medium hover:bg-[#5f7f64] transition"
         >
-          Signup
+          Sign Up
         </button>
       </form>
-    </>
-  );
+    </div>
+  </div>
+);
+
 };
 
-export default Signup;
+export default RestuarantSignup;

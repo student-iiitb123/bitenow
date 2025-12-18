@@ -52,21 +52,21 @@ export default function RestaurantPage() {
             All Restaurants
           </h2>
 
-          {/* ✅ LOADING */}
+          {/*LOADING */}
           {loading && (
             <p className="text-center py-20 font-medium">
               Loading restaurants...
             </p>
           )}
 
-          {/* ✅ EMPTY STATE */}
+          {/*  EMPTY STATE */}
           {!loading && restuarant.length === 0 && (
             <p className="text-center py-20 text-gray-500">
               No restaurants found
             </p>
           )}
 
-          {/* ✅ SAFE MAP */}
+          {/*  SAFE MAP */}
           {!loading && restuarant.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {restuarant.map((item, index) => (
@@ -95,12 +95,12 @@ export default function RestaurantPage() {
                     </h4>
 
                     <p className="text-sm text-gray-600">
-                      ⭐ {item.rating || 4.8} • ⏱{" "}
+                    {item.rating || 4.8} • ⏱{" "}
                       {item.time || "20-30 mins"}
                     </p>
 
                     <p className="text-sm text-gray-600">
-                      📍 {item.city}
+                     {item.city}
                     </p>
                   </div>
                 </div>

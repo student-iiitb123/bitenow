@@ -51,7 +51,7 @@ const Navbar = () => {
             </>
           ) : (
             <li className="hover:text-orange-500 transition">
-              <Link href="/login">Login / Signup</Link>
+             Login / Signup
             </li>
           )}
         </ul>
