@@ -64,7 +64,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[#F4F1EC] text-[#2F3E34] overflow-hidden">
-    
+    <CustomerHeader />
       {/* HERO SECTION */}
 <motion.section
   initial={{ opacity: 0, y: 50 }}

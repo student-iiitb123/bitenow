@@ -11,6 +11,7 @@ import {
   Phone,
   UserPlus
 } from "lucide-react"
+import CustomerHeader from "./CustomerHeader"
 
 const UserSignUp = () => {
   const [name, setName] = useState('')
@@ -32,7 +33,7 @@ const UserSignUp = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/api/users", {
+      let response = await fetch("http://localhost:3000/api/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -66,7 +67,10 @@ const UserSignUp = () => {
   }
 
   return (
+
+
     <div className="min-h-screen flex items-center justify-center bg-[#F4F1EC] px-4">
+      
       <form
         onSubmit={handleSignUp}
         className="w-full max-w-md bg-[#E8E2D8]/80 backdrop-blur-xl p-8 rounded-2xl shadow-xl space-y-4"

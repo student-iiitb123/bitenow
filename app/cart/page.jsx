@@ -1,111 +1,87 @@
-import React from "react";
-import {
-  ShoppingCart,
-  Trash2,
-  Tag,
-  CreditCard,
-} from "lucide-react";
+"use client";
 
-const Cart = () => {
+import React, { useEffect, useState } from "react";
+import CustomerHeader from "../_components/CustomerHeader";
+
+const CartPage = () => {
+  const [cart, setCart] = useState([]);
+
+  // Load cart from localStorage
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("cart")) || [];
+    setCart(data);
+  }, []);
+
+  // Remove item from cart
+  const removeFromCart = (id) => {
+    const updatedCart = cart.filter((item) => item._id !== id);
+    setCart(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+  };
+
+  // Calculate total price
+  const totalPrice = cart.reduce((sum, item) => sum + Number(item.price), 0);
+
   return (
     <>
-      {/* Breadcrumb */}
-      <section className="py-12 bg-[#E8E2D8]/80 backdrop-blur-md">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-3xl font-semibold text-[#2F3E34] flex items-center justify-center gap-2">
-            <ShoppingCart className="w-7 h-7 text-[#6F8F73]" />
-            Cart Page
-          </h2>
-          <p className="text-sm text-[#7A857C] mt-2">
-            Home / Pages / Cart
-          </p>
+      <CustomerHeader cartStorage={cart} setCartStorage={setCart} />
+
+      <main className="min-h-screen bg-gray-100 py-10">
+        <div className="max-w-6xl mx-auto px-6">
+          <h1 className="text-3xl font-bold text-gray-900 mb-6">Your Cart</h1>
+
+          {cart.length === 0 ? (
+            <p className="text-gray-500 text-center mt-10">
+              Your cart is empty.
+            </p>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {cart.map((food) => (
+                  <div
+                    key={food._id}
+                    className="bg-white rounded-2xl shadow-md hover:shadow-xl transition p-4 flex flex-col"
+                  >
+                    <img
+                      src={food.path || "/food-placeholder.png"}
+                      alt={food.name}
+                      className="w-full h-36 object-cover rounded-xl mb-4"
+                    />
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      {food.name}
+                    </h3>
+                    <p className="text-sm text-gray-500 mt-1">{food.description}</p>
+                    <div className="mt-auto flex items-center justify-between mt-4">
+                      <span className="font-bold text-gray-900">₹{food.price}</span>
+                      <button
+                        onClick={() => removeFromCart(food._id)}
+                        className="px-4 py-1.5 text-sm rounded-full bg-red-500 text-white hover:bg-red-600 transition"
+                      >
+                        REMOVE
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Total Price */}
+              <div className="mt-8 p-6 bg-white rounded-2xl shadow-md flex justify-between items-center">
+                <span className="text-xl font-semibold text-gray-900">Total:</span>
+                <span className="text-xl font-bold text-green-700">₹{totalPrice}</span>
+              </div>
+
+              {/* Checkout Button */}
+              <div className="mt-4 flex justify-end">
+                <button className="px-6 py-3 bg-green-700 text-white rounded-xl font-semibold hover:bg-green-800 transition">
+                  Proceed to Checkout
+                </button>
+              </div>
+            </>
+          )}
         </div>
-      </section>
-
-      {/* Cart Section */}
-      <section className="py-14 bg-[#F4F1EC]">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
-
-          {/* Cart Items */}
-          <div className="lg:col-span-9 bg-[#E8E2D8]/80 backdrop-blur-md rounded-2xl shadow-lg p-6">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="border-b border-[#6F8F73]/30 text-[#2F3E34]">
-                  <th className="py-3">Item</th>
-                  <th>Price</th>
-                  <th>Qty</th>
-                  <th>Total</th>
-                  <th></th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <tr className="border-b border-[#6F8F73]/20 text-[#2F3E34]">
-                  <td className="py-4 font-medium">Product Name</td>
-                  <td>$10</td>
-                  <td>1</td>
-                  <td className="font-semibold">$10</td>
-                  <td>
-                    <button className="text-red-500 hover:text-red-600 transition">
-                      <Trash2 className="w-5 h-5" />
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          {/* Sidebar */}
-          <div className="lg:col-span-3 space-y-6">
-
-            {/* Coupon */}
-            <div className="bg-[#E8E2D8]/80 backdrop-blur-md rounded-2xl shadow-lg p-5">
-              <h4 className="flex items-center gap-2 font-semibold text-[#2F3E34] mb-3">
-                <Tag className="w-5 h-5 text-[#6F8F73]" />
-                Coupon
-              </h4>
-
-              <input
-                type="text"
-                placeholder="Enter coupon code"
-                className="w-full px-4 py-2 rounded-lg bg-[#F4F1EC] text-[#2F3E34] placeholder-[#7A857C] focus:outline-none focus:ring-2 focus:ring-[#6F8F73]"
-              />
-
-              <button className="w-full mt-3 py-2 rounded-lg bg-[#6F8F73] text-white hover:bg-[#5d7d64] transition">
-                Apply Coupon
-              </button>
-            </div>
-
-            {/* Summary */}
-            <div className="bg-[#E8E2D8]/80 backdrop-blur-md rounded-2xl shadow-lg p-5">
-              <h4 className="font-semibold text-[#2F3E34] mb-2">
-                Order Summary
-              </h4>
-              <p className="text-[#7A857C]">
-                Total:
-                <span className="float-right font-semibold text-[#2F3E34]">
-                  $100
-                </span>
-              </p>
-            </div>
-
-            {/* Payment */}
-            <div className="bg-[#E8E2D8]/80 backdrop-blur-md rounded-2xl shadow-lg p-5">
-              <h4 className="flex items-center gap-2 font-semibold text-[#2F3E34] mb-3">
-                <CreditCard className="w-5 h-5 text-[#6F8F73]" />
-                Payment
-              </h4>
-
-              <button className="w-full py-3 rounded-xl bg-[#6F8F73] text-white font-medium hover:bg-[#5d7d64] transition">
-                Proceed to Checkout
-              </button>
-            </div>
-
-          </div>
-        </div>
-      </section>
+      </main>
     </>
   );
 };
 
-export default Cart;
+export default CartPage;
