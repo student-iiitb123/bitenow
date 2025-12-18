@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 export default function RestaurantPage() {
   const router = useRouter();
 
-  // ✅ ALWAYS ARRAY
+  //  ALWAYS ARRAY
   const [restuarant, setRestuarant] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -22,7 +22,7 @@ export default function RestaurantPage() {
         const res = await fetch("/api/restuarant/customers");
         const data = await res.json();
 
-        // ✅ normalize response
+        // normalize response
         if (Array.isArray(data)) {
           setRestuarant(data);
         } else if (Array.isArray(data?.result)) {
