@@ -99,7 +99,7 @@ const UserSignUp = () => {
         {/* City */}
         <Input icon={MapPin} placeholder="City" value={city} setValue={setCity} />
 
-        {/* Address */}
+        
         <Input icon={Home} placeholder="Address" value={address} setValue={setAddress} />
 
       
