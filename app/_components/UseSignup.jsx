@@ -96,7 +96,7 @@ const UserSignUp = () => {
         {/* Confirm Password */}
         <Input icon={Lock} type="password" placeholder="Confirm Password" value={confirmPassword} setValue={setConfirmPassword} />
 
-        {/* City */}
+        
         <Input icon={MapPin} placeholder="City" value={city} setValue={setCity} />
 
         
