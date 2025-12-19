@@ -118,7 +118,7 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* RESTAURANTS PREVIEW */}
+      
       <section className="relative z-10 py-24 bg-[#F4F1EC] rounded-t-[4rem] px-6">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-end justify-between mb-10">
