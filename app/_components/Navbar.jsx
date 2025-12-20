@@ -24,7 +24,10 @@ const Navbar = () => {
     <nav className="w-full bg-white shadow px-10 py-4">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
 
-        <h1 className="text-3xl font-bold text-orange-600">BiteNow</h1>
+        <h1 className="text-3xl font-extrabold tracking-wide">
+          <span className="text-green-700">Bite</span>
+          <span className="text-gray-900">Now</span>
+        </h1>
 
         <ul className="flex items-center gap-10 text-lg font-medium text-gray-800">
           <li className="hover:text-orange-500 transition">
