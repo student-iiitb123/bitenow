@@ -22,7 +22,7 @@ It is designed to demonstrate **full-stack development skills**, including front
 
  Restaurant Dashboard
 - Restaurant authentication
-- Add food items
+- Add food items`
 - Edit food items
 - Delete food items
 - View restaurant-specific menu

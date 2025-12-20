@@ -60,6 +60,8 @@ useEffect(() => {
   const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
   setCartStorage(storedCart);
 }, []);
+
+
   
       const handleclick = (food) => {
      setCart(food)

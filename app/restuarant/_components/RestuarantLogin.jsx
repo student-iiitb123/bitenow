@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Mail, Lock, LogIn } from "lucide-react";
+import Navbar from "../../_components/Navbar"
+import Footer from "../../_components/Footer";
 
 const RestuarantLogin = () => {
   const router = useRouter();
@@ -36,8 +38,10 @@ const RestuarantLogin = () => {
   };
 
   return (
+    <>
+    
     <div className="bg-white rounded-2xl shadow-lg p-6">
-      
+   
       {/* Heading */}
       <div className="text-center mb-6">
         <h1 className="text-3xl font-bold text-[#3E5F4C]">
@@ -96,7 +100,12 @@ const RestuarantLogin = () => {
           Login
         </button>
       </form>
+
+
     </div>
+
+         
+          </>
   );
 };
 
