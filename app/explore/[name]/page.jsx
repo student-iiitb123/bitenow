@@ -60,6 +60,8 @@ useEffect(() => {
   const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
   setCartStorage(storedCart);
 }, []);
+
+
   
       const handleclick = (food) => {
      setCart(food)
@@ -78,7 +80,7 @@ useEffect(() => {
       setLoading(true);
 
       const res = await fetch(
-        `http://localhost:3000/api/restuarant/customers/${id}`
+        `/api/restuarant/customers/${id}`
       );
 
       if (!res.ok) throw new Error("Failed to fetch");

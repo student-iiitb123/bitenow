@@ -5,12 +5,17 @@ import { useState } from "react";
 import Layout from "./dashboard/layout";
 import RestuarantLogin from "./_components/RestuarantLogin";
 import RestuarantSignup from "./_components/RestuarantSignup";
+import Navbar from "../_components/Navbar";
+import Footer from "../_components/Footer";
 
 export default function Page() {
   const [toggle, setToggle] = useState(true);
 
   return (
+    <>
+    <Navbar />
     <Layout hideSidebar={true}>
+      
       <div className="min-h-screen flex items-center justify-center bg-[#F7F4EE]">
         <div className="w-full max-w-md px-1">
           {toggle ? <RestuarantLogin /> : <RestuarantSignup />}
@@ -26,5 +31,7 @@ export default function Page() {
         </div>
       </div>
     </Layout>
+   
+    </>
   );
 }

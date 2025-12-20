@@ -18,7 +18,7 @@ const FoodItemList = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/restuarant/foods/${resto_id}`
+        `/api/restuarant/foods/${resto_id}`
       );
       const result = await response.json();
       if (result) {
@@ -35,7 +35,7 @@ const FoodItemList = () => {
   const deleteFoodItems = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/restuarant/foods/${id}`,
+        `/api/restuarant/foods/${id}`,
         { method: "DELETE" }
       );
       const result = await response.json();

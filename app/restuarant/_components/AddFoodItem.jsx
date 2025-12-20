@@ -25,7 +25,7 @@ const AddFoodItems = () => {
     const restro_id = restuarantData._id;
 
     try {
-      const res = await fetch("http://localhost:3000/api/restuarant/foods", {
+      const res = await fetch("/api/restuarant/foods", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, price, path, description, restro_id }),

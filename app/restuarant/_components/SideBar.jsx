@@ -45,7 +45,7 @@ console.log(data);
         </button>
 
         <button
-          onClick={() => router.push("/restuarant/addFood")}
+          onClick={() => router.push("/restuarant/addfood")}
           className="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-gray-700 hover:bg-green-50 hover:text-green-700 transition"
         >
           <PlusSquare size={20} />

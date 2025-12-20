@@ -12,7 +12,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-//Home Section
+
 
 export default function Home() {
   const router = useRouter();
@@ -45,7 +45,7 @@ export default function Home() {
   }, [restuarant]);
 
   const loadRestuarant = async (params) => {
-    let url = "http://localhost:3000/api/restuarant/customers";
+    let url = "/api/restuarant/customers";
     if (params?.location) url += "?location=" + params.location;
     else if (params?.restuarant) url += "?restuarant=" + params.restuarant;
 
@@ -55,7 +55,7 @@ export default function Home() {
   };
 
   const loadLocations = async () => {
-    await fetch("http://localhost:3000/api/restuarant/customers/location");
+    await fetch("/api/restuarant/customers/location");
   };
 
   const handleResturant = (restuarant, id) => {
@@ -128,7 +128,7 @@ export default function Home() {
 
             {/*  NAVIGATE TO PAGE */}
             <button
-              onClick={() => router.push("/restuarants")}
+              onClick={() => router.push("/allrestuarants")}
               className="border border-black px-5 py-2 rounded-full
                          hover:bg-black hover:text-white transition"
             >
