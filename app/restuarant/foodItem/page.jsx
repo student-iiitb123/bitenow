@@ -1,10 +1,10 @@
 import React from 'react'
-import AddFoodItems from '../_components/AddFoodItem'
+import FoodItemList from '../_components/FoodItemList'
 
 const page = () => {
   return (
     <div>
-      <AddFoodItems />
+      <FoodItemList />
     </div>
   )
 }

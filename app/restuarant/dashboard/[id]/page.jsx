@@ -61,6 +61,7 @@ useEffect(() => {
   };
 
   return (
+       
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
         <h1 className="text-2xl font-semibold text-center mb-6">
@@ -75,7 +76,8 @@ useEffect(() => {
             onChange={(e) => setName(e.target.value)}
             className="w-full h-11 px-4 border rounded-md"
           />
-          {error && !name && <span className="text-red-500">Name is required</span>}
+          {error && !name && <span className="text-red-500
+          ">Name is required</span>}
 
           <input
             type="number"
@@ -119,6 +121,7 @@ useEffect(() => {
         </div>
       </div>
     </div>
+    
   );
 };
 

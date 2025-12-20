@@ -10,18 +10,13 @@ const AddFoodItems = () => {
   const [error, setError] = useState(false);
 
   const handleAddFoodItem = async () => {
-  
     if (!name || !price || !path || !description) {
       setError(true);
       return;
     }
     setError(false);
 
-    
-    const restuarantData = JSON.parse(
-      localStorage.getItem("resturantUser")
-    );
-
+    const restuarantData = JSON.parse(localStorage.getItem("resturantUser"));
     if (!restuarantData) {
       alert("Restaurant not logged in");
       return;
@@ -29,39 +24,32 @@ const AddFoodItems = () => {
 
     const restro_id = restuarantData._id;
 
-    
-    const res = await fetch("http://localhost:3000/api/restuarant/foods", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        price,
-        path,
-        description,
-        restro_id,
-      }),
-    });
+    try {
+      const res = await fetch("/api/restuarant/foods", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, price, path, description, restro_id }),
+      });
 
-    const result = await res.json();
-    console.log("Food Item Response:", result);
-
-    if (result.success) {
-      alert("Food item added successfully ");
-
-    
-      setName("");
-      setPrice("");
-      setPath("");
-      setDescription("");
+      const result = await res.json();
+      if (result.success) {
+        alert("Food item added successfully");
+        setName("");
+        setPrice("");
+        setPath("");
+        setDescription("");
+      } else {
+        alert("Failed to add food item");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong");
     }
   };
 
-  
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
+<div className="p-6 min-h-screen bg-gray-50 flex items-center justify-center">
+    <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
         <h1 className="text-2xl font-semibold text-center mb-6">
           Add New Food Item
         </h1>
@@ -128,7 +116,7 @@ const AddFoodItems = () => {
 
           <button
             onClick={handleAddFoodItem}
-            className="w-full h-11 bg-orange-600 text-white rounded-md hover:bg-orange-700"
+            className="w-full h-11 bg-green-700 text-white rounded-md hover:bg-green-800 transition"
           >
             Add Food Item
           </button>

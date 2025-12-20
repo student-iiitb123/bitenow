@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import dbConnect from "../../../../lib/db";
-import Food from "../../../../lib/food.model";
+import dbConnect from "../../../../../lib/db";
+import Food from "../../../../../lib/food.model";
 
 export async function GET(request, { params }) {
   const { id } = await params;

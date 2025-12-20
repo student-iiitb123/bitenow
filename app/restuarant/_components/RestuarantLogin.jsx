@@ -12,7 +12,7 @@ const RestuarantLogin = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    let result = await fetch("http://localhost:3000/api/restuarant", {
+    let result = await fetch("/api/restuarant", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
