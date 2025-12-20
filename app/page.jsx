@@ -128,7 +128,7 @@ export default function Home() {
 
             {/*  NAVIGATE TO PAGE */}
             <button
-              onClick={() => router.push("/restuarants")}
+              onClick={() => router.push("/allrestuarants")}
               className="border border-black px-5 py-2 rounded-full
                          hover:bg-black hover:text-white transition"
             >
