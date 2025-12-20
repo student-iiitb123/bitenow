@@ -151,11 +151,13 @@ export default function Home() {
                              border hover:shadow-lg transition"
                 >
                   {/* IMAGE */}
-                  <div className="h-48 bg-gradient-to-br from-[#8FAE8B] to-[#6F8F73] flex items-center justify-center">
-                    <span className="text-white text-sm opacity-80">
-                      Restaurant Image
-                    </span>
-                  </div>
+                <div className="h-48 overflow-hidden">
+  <img
+    src={item.image}
+    alt={item.restuarant}
+    className="w-full h-full object-cover"
+  />
+</div>
                  
                   {/* CONTENT */}
                   <div className="p-6">

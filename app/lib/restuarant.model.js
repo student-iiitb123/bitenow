@@ -1,8 +1,6 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const schema = mongoose.Schema
-
-
+const schema = mongoose.Schema;
 
 const userSchema = new schema(
   {
@@ -12,10 +10,9 @@ const userSchema = new schema(
       trim: true,
     },
 
-     restuarant:{
-        type:String,
-        required:true
-
+    restuarant: {
+      type: String,
+      required: true,
     },
 
     city: {
@@ -45,13 +42,19 @@ const userSchema = new schema(
       required: true,
       minlength: 6,
     },
+
+    image: {
+      type: String, // image URL or file path
+      required: false,
+    },
   },
   {
-    timestamps: true, 
+    timestamps: true,
   }
 );
 
-const User = mongoose.models.restuarants 
-  || mongoose.model('restuarants', userSchema);
+const User =
+  mongoose.models.restuarants ||
+  mongoose.model("restuarants", userSchema);
 
 export default User;

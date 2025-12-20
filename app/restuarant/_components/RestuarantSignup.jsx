@@ -22,34 +22,36 @@ const RestuarantSignup = () => {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+ const [image, setImage] = useState(null);
+
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const res = await fetch("/api/restuarant", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name,
-        restuarant,
-        city,
-        address,
-        phone,
-        email,
-        password,
-      }),
-    });
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("restuarant", restuarant);
+  formData.append("city", city);
+  formData.append("address", address);
+  formData.append("phone", phone);
+  formData.append("email", email);
+  formData.append("password", password);
+  formData.append("image", image);
 
-    const data = await res.json();
+  const res = await fetch("/api/restuarant", {
+    method: "POST",
+    body: formData, // 🚨 NO headers here
+  });
 
-    if (data.success) {
-      const user = data.result;
-      delete user.password;
+  const data = await res.json();
+  console.log(data);
 
-      localStorage.setItem("resturantUser", JSON.stringify(user));
-      router.push("/restuarant/dashboard");
-    }
-  };
+  if (data.success) {
+    localStorage.setItem("resturantUser", JSON.stringify(data.result));
+    router.push("/restuarant/dashboard");
+  }
+};
+
 
   return (
     <div className="bg-white rounded-2xl shadow-lg p-6">
@@ -163,6 +165,19 @@ const RestuarantSignup = () => {
                        focus:outline-none focus:ring-2 focus:ring-[#6F8F73]"
             required
           />
+        </div>
+
+        <div className="relative">
+          <User className="absolute left-3 top-1/2 -translate-y-1/2 text-[#6F8F73]" size={18} />
+         <input
+  type="file"
+  accept="image/*"
+  onChange={(e) => setImage(e.target.files[0])}
+  className="w-full h-11 pl-10 pr-3 border border-gray-300 rounded-lg
+             focus:outline-none focus:ring-2 focus:ring-[#6F8F73]"
+  required
+/>
+
         </div>
 
         {/* Submit */}
