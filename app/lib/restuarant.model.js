@@ -1,50 +1,49 @@
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
-const schema = mongoose.Schema;
-
-const userSchema = new schema(
+const restaurantSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: [true, "Owner name is required"],
       trim: true,
     },
 
     restuarant: {
       type: String,
-      required: true,
+      required: [true, "Restaurant name is required"],
     },
 
     city: {
       type: String,
-      required: true,
+      required: [true, "City is required"],
     },
 
     address: {
       type: String,
-      required: true,
+      required: [true, "Address is required"],
     },
 
     phone: {
       type: String,
-      required: true,
+      required: [true, "Phone number is required"],
     },
 
     email: {
       type: String,
-      required: true,
+      required: [true, "Email is required"],
       unique: true,
       lowercase: true,
     },
 
     password: {
       type: String,
-      required: true,
-      minlength: 6,
+      required: [true, "Password is required"],
+      minlength: [6, "Password must be at least 6 characters"],
     },
 
     image: {
-      type: String, // image URL or file path
+      type: String,
       required: false,
     },
   },
@@ -53,8 +52,32 @@ const userSchema = new schema(
   }
 );
 
-const User =
-  mongoose.models.restuarants ||
-  mongoose.model("restuarants", userSchema);
+// Hash password before saving (only if modified)
+restaurantSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  try {
+    const salt = await bcrypt.genSalt(12);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 
-export default User;
+// Method to compare password
+restaurantSchema.methods.comparePassword = async function (candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password);
+};
+
+// Never include password in JSON output
+restaurantSchema.methods.toJSON = function () {
+  const obj = this.toObject();
+  delete obj.password;
+  return obj;
+};
+
+const Restaurant =
+  mongoose.models.restuarants ||
+  mongoose.model("restuarants", restaurantSchema);
+
+export default Restaurant;

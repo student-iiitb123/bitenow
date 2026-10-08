@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import CustomerHeader from "../../_components/CustomerHeader"
+import CustomerHeader from "../../_components/CustomerHeader";
+import Footer from "../../_components/Footer";
 
 export default function RestaurantPage() {
   const searchParams = useSearchParams();
@@ -11,66 +12,40 @@ export default function RestaurantPage() {
   const [restaurant, setRestaurant] = useState(null);
   const [foods, setFoods] = useState([]);
   const [loading, setLoading] = useState(true);
-  const[cart,setCart] = useState();
-  const [cartStorage,setCartStorage] = useState([]);
-const [cartIds, setCartIds] = useState([]);
+  const [cart, setCart] = useState();
+  const [cartStorage, setCartStorage] = useState([]);
+  const [cartIds, setCartIds] = useState([]);
+  const [removecarddata, setremovecartdata] = useState();
 
-const [removecarddata,setremovecartdata] = useState();
+  const removefromCart = (id) => {
+    const updatedCart = cartStorage.filter((item) => item._id !== id);
+    setCartStorage(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    setCartIds(updatedCart.map((item) => item._id));
+    setremovecartdata(id);
+  };
 
-
-
-const removefromCart = (id) => {
-  // update cartStorage
-  const updatedCart = cartStorage.filter(item => item._id !== id);
-  setCartStorage(updatedCart);
-  localStorage.setItem("cart", JSON.stringify(updatedCart));
-
-  // update cartIds for UI button
-  setCartIds(updatedCart.map(item => item._id));
-
-  // update CustomerHeader
-  setremovecartdata(id);
-};
-
-
-    useEffect(() => {
-        const handleStorageChange = () => {
-          const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
-          setCartItems(storedCart);
-          setCartNumber(storedCart.length);
-        };
-        window.addEventListener("storage", handleStorageChange);
-        return () => window.removeEventListener("storage", handleStorageChange);
-      }, []);
-      
-      
-
-useEffect(() => {
-  if (Array.isArray(cartStorage)) {
-    setCartIds(cartStorage.map(item => item._id));
-  }
-}, [cartStorage]);
-
-
-
-  console.log("cardId",cartIds)
-   console.log("cartStorage",cartStorage)
-
+  // Sync cartIds when cartStorage changes
   useEffect(() => {
-  const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
-  setCartStorage(storedCart);
-}, []);
+    if (Array.isArray(cartStorage)) {
+      setCartIds(cartStorage.map((item) => item._id));
+    }
+  }, [cartStorage]);
 
+  // Load cart from localStorage on mount
+  useEffect(() => {
+    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+    setCartStorage(storedCart);
+  }, []);
 
-  
-      const handleclick = (food) => {
-     setCart(food)
-     const updatedCart = [...cartStorage, food];
-  setCartStorage(updatedCart);
-  localStorage.setItem("cart", JSON.stringify(updatedCart));
-  }
-   
-  console.log(cart);
+  const handleclick = (food) => {
+    setCart(food);
+    const updatedCart = [...cartStorage, { ...food, quantity: 1 }];
+    setCartStorage(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+  };
+
+  // Load restaurant data
   useEffect(() => {
     if (id) loadData();
   }, [id]);
@@ -79,9 +54,7 @@ useEffect(() => {
     try {
       setLoading(true);
 
-      const res = await fetch(
-        `/api/restuarant/customers/${id}`
-      );
+      const res = await fetch(`/api/restuarant/customers/${id}`);
 
       if (!res.ok) throw new Error("Failed to fetch");
 
@@ -99,10 +72,7 @@ useEffect(() => {
   };
 
   if (loading) {
-   
     return (
-      
-
       <div className="min-h-screen flex items-center justify-center text-gray-500">
         Loading restaurant...
       </div>
@@ -117,14 +87,11 @@ useEffect(() => {
     );
   }
 
-
-  
   return (
-    
     <main className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200">
       {/* Header */}
-       <CustomerHeader  cartdata={cart}  removecarddata={removecarddata}    cartStorage={cartStorage}
-  setCartStorage={setCartStorage} />
+      <CustomerHeader cartdata={cart} removecartdata={removecarddata} />
+
       <section className="sticky top-0 z-10 backdrop-blur-xl bg-white/70 border-b">
         <div className="max-w-6xl mx-auto px-6 py-6">
           <h1 className="text-3xl font-semibold text-gray-900">
@@ -175,26 +142,21 @@ useEffect(() => {
                       ₹{food.price}
                     </span>
 
-                   {
-  cartIds.includes(food._id) ? (
-    <button
-      onClick={() => removefromCart(food._id)}
-      className="px-4 py-1.5 text-sm rounded-full bg-red-500 text-white hover:bg-red-600 transition"
-    >
-      REMOVE
-    </button>
-  ) : (
-    <button
-      onClick={() => handleclick(food)}
-      className="px-4 py-1.5 text-sm rounded-full bg-orange-500 text-white hover:bg-orange-600 transition"
-    >
-      ADD
-    </button>
-  )
-}
-
-
-                   
+                    {cartIds.includes(food._id) ? (
+                      <button
+                        onClick={() => removefromCart(food._id)}
+                        className="px-4 py-1.5 text-sm rounded-full bg-red-500 text-white hover:bg-red-600 transition"
+                      >
+                        REMOVE
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleclick(food)}
+                        className="px-4 py-1.5 text-sm rounded-full bg-orange-500 text-white hover:bg-orange-600 transition"
+                      >
+                        ADD
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -202,6 +164,7 @@ useEffect(() => {
           </div>
         )}
       </section>
+      <Footer />
     </main>
   );
-} 
+}

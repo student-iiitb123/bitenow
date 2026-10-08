@@ -8,51 +8,73 @@ const AddFoodItems = () => {
   const [path, setPath] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState("");
 
   const handleAddFoodItem = async () => {
     if (!name || !price || !path || !description) {
       setError(true);
       return;
     }
-    setError(false);
 
-    const restuarantData = JSON.parse(localStorage.getItem("resturantUser"));
-    if (!restuarantData) {
-      alert("Restaurant not logged in");
+    // Validate price
+    const numericPrice = Number(price);
+    if (isNaN(numericPrice) || numericPrice < 0) {
+      alert("Price must be a valid non-negative number");
       return;
     }
 
-    const restro_id = restuarantData._id;
+    setError(false);
+    setSuccess("");
+    setLoading(true);
+
+    const token = localStorage.getItem("restaurantToken");
+    if (!token) {
+      alert("Restaurant not logged in");
+      setLoading(false);
+      return;
+    }
 
     try {
       const res = await fetch("/api/restuarant/foods", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, price, path, description, restro_id }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ name, price: numericPrice, path, description }),
       });
 
       const result = await res.json();
       if (result.success) {
-        alert("Food item added successfully");
+        setSuccess("Food item added successfully!");
         setName("");
         setPrice("");
         setPath("");
         setDescription("");
       } else {
-        alert("Failed to add food item");
+        alert(result.message || "Failed to add food item");
       }
     } catch (err) {
       console.error(err);
       alert("Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-<div className="p-6 min-h-screen bg-gray-50 flex items-center justify-center">
-    <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
+    <div className="p-6 min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
         <h1 className="text-2xl font-semibold text-center mb-6">
           Add New Food Item
         </h1>
+
+        {success && (
+          <p className="text-green-600 text-sm text-center mb-4 bg-green-50 py-2 rounded-lg">
+            {success}
+          </p>
+        )}
 
         <div className="space-y-4">
           <div className="relative">
@@ -62,6 +84,7 @@ const AddFoodItems = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-full h-11 px-4 border rounded-md"
+              disabled={loading}
             />
             {error && !name && (
               <span className="text-red-500 text-sm">
@@ -77,6 +100,8 @@ const AddFoodItems = () => {
               value={price}
               onChange={(e) => setPrice(e.target.value)}
               className="w-full h-11 px-4 border rounded-md"
+              min="0"
+              disabled={loading}
             />
             {error && !price && (
               <span className="text-red-500 text-sm">
@@ -88,14 +113,15 @@ const AddFoodItems = () => {
           <div className="relative">
             <input
               type="text"
-              placeholder="Enter image path"
+              placeholder="Enter image URL"
               value={path}
               onChange={(e) => setPath(e.target.value)}
               className="w-full h-11 px-4 border rounded-md"
+              disabled={loading}
             />
             {error && !path && (
               <span className="text-red-500 text-sm">
-                Please enter a valid path
+                Please enter a valid image URL
               </span>
             )}
           </div>
@@ -106,6 +132,7 @@ const AddFoodItems = () => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               className="w-full h-24 px-4 py-2 border rounded-md"
+              disabled={loading}
             />
             {error && !description && (
               <span className="text-red-500 text-sm">
@@ -116,9 +143,10 @@ const AddFoodItems = () => {
 
           <button
             onClick={handleAddFoodItem}
-            className="w-full h-11 bg-green-700 text-white rounded-md hover:bg-green-800 transition"
+            disabled={loading}
+            className="w-full h-11 bg-green-700 text-white rounded-md hover:bg-green-800 transition disabled:opacity-50"
           >
-            Add Food Item
+            {loading ? "Adding..." : "Add Food Item"}
           </button>
         </div>
       </div>

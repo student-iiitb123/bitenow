@@ -22,36 +22,58 @@ const RestuarantSignup = () => {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
- const [image, setImage] = useState(null);
-
+  const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
+    setError("");
 
-  const formData = new FormData();
-  formData.append("name", name);
-  formData.append("restuarant", restuarant);
-  formData.append("city", city);
-  formData.append("address", address);
-  formData.append("phone", phone);
-  formData.append("email", email);
-  formData.append("password", password);
-  formData.append("image", image);
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters");
+      return;
+    }
 
-  const res = await fetch("/api/restuarant", {
-    method: "POST",
-    body: formData, // 🚨 NO headers here
-  });
+    setLoading(true);
 
-  const data = await res.json();
-  console.log(data);
+    try {
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("restuarant", restuarant);
+      formData.append("city", city);
+      formData.append("address", address);
+      formData.append("phone", phone);
+      formData.append("email", email);
+      formData.append("password", password);
+      if (image) {
+        formData.append("image", image);
+      }
 
-  if (data.success) {
-    localStorage.setItem("resturantUser", JSON.stringify(data.result));
-    router.push("/restuarant/dashboard");
-  }
-};
+      const res = await fetch("/api/restuarant", {
+        method: "POST",
+        body: formData,
+      });
 
+      const data = await res.json();
+
+      if (data.success) {
+        // Store token and user data (password excluded by server)
+        if (data.token) {
+          localStorage.setItem("restaurantToken", data.token);
+        }
+        localStorage.setItem("resturantUser", JSON.stringify(data.result));
+        router.push("/restuarant/dashboard");
+      } else {
+        setError(data.message || "Registration failed");
+      }
+    } catch (err) {
+      console.error("Restaurant signup error:", err);
+      setError("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="bg-white rounded-2xl shadow-lg p-6">
@@ -65,6 +87,12 @@ const RestuarantSignup = () => {
           Join and manage your restaurant
         </p>
       </div>
+
+      {error && (
+        <p className="text-red-500 text-sm text-center mb-4 bg-red-50 py-2 rounded-lg">
+          {error}
+        </p>
+      )}
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -80,6 +108,7 @@ const RestuarantSignup = () => {
             className="w-full h-11 pl-10 pr-3 border border-gray-300 rounded-lg
                        focus:outline-none focus:ring-2 focus:ring-[#6F8F73]"
             required
+            disabled={loading}
           />
         </div>
 
@@ -94,6 +123,7 @@ const RestuarantSignup = () => {
             className="w-full h-11 pl-10 pr-3 border border-gray-300 rounded-lg
                        focus:outline-none focus:ring-2 focus:ring-[#6F8F73]"
             required
+            disabled={loading}
           />
         </div>
 
@@ -108,6 +138,7 @@ const RestuarantSignup = () => {
             className="w-full h-11 pl-10 pr-3 border border-gray-300 rounded-lg
                        focus:outline-none focus:ring-2 focus:ring-[#6F8F73]"
             required
+            disabled={loading}
           />
         </div>
 
@@ -122,6 +153,7 @@ const RestuarantSignup = () => {
             className="w-full h-11 pl-10 pr-3 border border-gray-300 rounded-lg
                        focus:outline-none focus:ring-2 focus:ring-[#6F8F73]"
             required
+            disabled={loading}
           />
         </div>
 
@@ -136,6 +168,7 @@ const RestuarantSignup = () => {
             className="w-full h-11 pl-10 pr-3 border border-gray-300 rounded-lg
                        focus:outline-none focus:ring-2 focus:ring-[#6F8F73]"
             required
+            disabled={loading}
           />
         </div>
 
@@ -150,6 +183,7 @@ const RestuarantSignup = () => {
             className="w-full h-11 pl-10 pr-3 border border-gray-300 rounded-lg
                        focus:outline-none focus:ring-2 focus:ring-[#6F8F73]"
             required
+            disabled={loading}
           />
         </div>
 
@@ -164,6 +198,7 @@ const RestuarantSignup = () => {
             className="w-full h-11 pl-10 pr-3 border border-gray-300 rounded-lg
                        focus:outline-none focus:ring-2 focus:ring-[#6F8F73]"
             required
+            disabled={loading}
           />
         </div>
 
@@ -175,20 +210,19 @@ const RestuarantSignup = () => {
   onChange={(e) => setImage(e.target.files[0])}
   className="w-full h-11 pl-10 pr-3 border border-gray-300 rounded-lg
              focus:outline-none focus:ring-2 focus:ring-[#6F8F73]"
-  required
 />
-
         </div>
 
         {/* Submit */}
         <button
           type="submit"
+          disabled={loading}
           className="mt-2 h-11 flex items-center justify-center gap-2
                      bg-[#6F8F73] text-white rounded-lg font-medium
-                     hover:bg-[#5C7A62] transition-all"
+                     hover:bg-[#5C7A62] transition-all disabled:opacity-50"
         >
           <UserPlus size={18} />
-          Create Account
+          {loading ? "Creating account..." : "Create Account"}
         </button>
       </form>
     </div>

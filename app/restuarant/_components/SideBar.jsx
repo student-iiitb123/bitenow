@@ -5,24 +5,27 @@ import { LayoutDashboard, PlusSquare, LogOut, UserCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const Sidebar = () => {
-
-  const [data,setData]= useState()
-
+  const [data, setData] = useState(null);
   const router = useRouter();
 
+  useEffect(() => {
+    const response = localStorage.getItem("resturantUser");
+    if (response) {
+      try {
+        setData(JSON.parse(response));
+      } catch {
+        // ignore parse errors
+      }
+    }
+  }, []);
+
   const handleLogout = () => {
-    localStorage.clear();
-    router.push("/login");
+    localStorage.removeItem("resturantUser");
+    localStorage.removeItem("restaurantToken");
+    router.push("/restuarant");
+    router.refresh();
   };
 
- useEffect(() => {
-  const response = localStorage.getItem("resturantUser");
-  if (response) {
-    setData(JSON.parse(response));
-  }
-}, []);
-
-console.log(data);
   return (
     <aside className="fixed top-0 left-0 w-64 h-screen bg-white border-r shadow-sm flex flex-col">
       {/* Profile Section */}
@@ -54,16 +57,14 @@ console.log(data);
       </nav>
 
       {/* Logout */}
-      <div className="p-4 border-t text-green-700">
+      <div className="p-4 border-t">
         <button
-  onClick={() => {
-    localStorage.removeItem("resturantUser");
-    router.push("/restuarant");
-    router.refresh(); 
-  }}
->
-  Logout
-</button>
+          onClick={handleLogout}
+          className="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition"
+        >
+          <LogOut size={20} />
+          <span className="font-medium">Logout</span>
+        </button>
       </div>
     </aside>
   );

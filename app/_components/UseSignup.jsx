@@ -11,7 +11,6 @@ import {
   Phone,
   UserPlus
 } from "lucide-react"
-import CustomerHeader from "./CustomerHeader"
 
 const UserSignUp = () => {
   const [name, setName] = useState('')
@@ -21,16 +20,26 @@ const UserSignUp = () => {
   const [city, setCity] = useState('')
   const [address, setAddress] = useState('')
   const [mobile, setMobile] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const router = useRouter()
 
   const userSignUp = async (e) => {
     e.preventDefault()
+    setError('')
 
     if (password !== confirmPassword) {
-      alert("Passwords do not match")
+      setError("Passwords do not match")
       return
     }
+
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters")
+      return
+    }
+
+    setLoading(true)
 
     try {
       let response = await fetch("/api/users", {
@@ -49,28 +58,28 @@ const UserSignUp = () => {
       })
 
       const data = await response.json()
-      console.log(data)
 
-      if (data?.result) {
-        const user = data.result
-        delete user.password
-        console.log(user);
+      if (data.success) {
+        // Store token and user (password already excluded by server)
+        const user = data.result || data.user
+        if (data.token) {
+          localStorage.setItem("token", data.token)
+        }
         localStorage.setItem("user", JSON.stringify(user))
         router.push("/")
       } else {
-        alert("Something went wrong")
+        setError(data.message || "Registration failed")
       }
-    } catch (error) {
-      console.error(error)
-      alert("Server error")
+    } catch (err) {
+      console.error("Signup error:", err)
+      setError("Network error. Please try again.")
+    } finally {
+      setLoading(false)
     }
   }
 
   return (
-
-
     <div className="">
-      
       <form
         onSubmit={userSignUp}
         className=""
@@ -84,33 +93,40 @@ const UserSignUp = () => {
           </p>
         </div>
 
+        {error && (
+          <p className="text-red-500 text-sm text-center mb-3 bg-red-50 py-2 rounded-lg">
+            {error}
+          </p>
+        )}
+
         {/* Name */}
-        <Input icon={User} placeholder="Full Name" value={name} setValue={setName} />
+        <Input icon={User} placeholder="Full Name" value={name} setValue={setName} disabled={loading} />
 
         {/* Email */}
-        <Input icon={Mail} type="email" placeholder="Email Address" value={email} setValue={setEmail} />
+        <Input icon={Mail} type="email" placeholder="Email Address" value={email} setValue={setEmail} disabled={loading} />
 
         {/* Password */}
-        <Input icon={Lock} type="password" placeholder="Password" value={password} setValue={setPassword} />
+        <Input icon={Lock} type="password" placeholder="Password" value={password} setValue={setPassword} disabled={loading} />
 
         {/* Confirm Password */}
-        <Input icon={Lock} type="password" placeholder="Confirm Password" value={confirmPassword} setValue={setConfirmPassword} />
+        <Input icon={Lock} type="password" placeholder="Confirm Password" value={confirmPassword} setValue={setConfirmPassword} disabled={loading} />
 
         
-        <Input icon={MapPin} placeholder="City" value={city} setValue={setCity} />
+        <Input icon={MapPin} placeholder="City" value={city} setValue={setCity} disabled={loading} />
 
         
-        <Input icon={Home} placeholder="Address" value={address} setValue={setAddress} />
+        <Input icon={Home} placeholder="Address" value={address} setValue={setAddress} disabled={loading} />
 
       
-        <Input icon={Phone} type="tel" placeholder="Mobile Number" value={mobile} setValue={setMobile} />
+        <Input icon={Phone} type="tel" placeholder="Mobile Number" value={mobile} setValue={setMobile} disabled={loading} />
 
         <button
           type="submit"
-          className="w-full mt-2 flex items-center justify-center gap-2 bg-[#6F8F73] hover:bg-[#5f7f64] text-white py-2.5 rounded-xl font-medium transition"
+          disabled={loading}
+          className="w-full mt-2 flex items-center justify-center gap-2 bg-[#6F8F73] hover:bg-[#5f7f64] text-white py-2.5 rounded-xl font-medium transition disabled:opacity-50"
         >
           <UserPlus size={18} />
-          Sign Up
+          {loading ? "Creating account..." : "Sign Up"}
         </button>
       </form>
     </div>
@@ -118,7 +134,7 @@ const UserSignUp = () => {
 }
 
 /* Reusable Input Component */
-const Input = ({ icon: Icon, type = "text", placeholder, value, setValue }) => (
+const Input = ({ icon: Icon, type = "text", placeholder, value, setValue, disabled }) => (
   <div className="flex items-center gap-3 h-12 px-4 rounded-xl bg-[#F4F1EC] shadow-inner focus-within:ring-2 focus-within:ring-[#6F8F73]/30 transition group">
     <Icon size={18} className="text-[#7A857C] group-focus-within:text-[#6F8F73]" />
     <input
@@ -128,6 +144,7 @@ const Input = ({ icon: Icon, type = "text", placeholder, value, setValue }) => (
       onChange={(e) => setValue(e.target.value)}
       className="flex-1 bg-transparent outline-none text-[#2F3E34] placeholder-[#7A857C]"
       required
+      disabled={disabled}
     />
   </div>
 )

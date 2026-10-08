@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import CustomerHeader from "./_components/CustomerHeader";
-import Footer from "./_components/Footer";
 
 export const metadata: Metadata = {
   title: "BiteNow",
-  description: "Food App",
+  description: "Food ordering app - Fresh. Fast. BiteNow.",
 };
 
 export default function RootLayout({
@@ -16,10 +14,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-
         {children}
-
-      
       </body>
     </html>
   );

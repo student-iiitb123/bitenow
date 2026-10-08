@@ -1,25 +1,7 @@
-import type { Metadata } from "next";
-
-
-
-export const metadata: Metadata = {
-  title: "BiteNow",
-  description: "Food App",
-};
-
-export default function RootLayout({
+export default function UserAuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <html lang="en">
-      <body>
-
-        {children}
-
-      
-      </body>
-    </html>
-  );
+  return <>{children}</>;
 }

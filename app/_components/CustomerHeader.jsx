@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const CustomerHeader = ({ cartdata ,removecartdata}) => {
+const CustomerHeader = ({ cartdata, removecartdata }) => {
   const [user, setUser] = useState(null);
   const [cartItems, setCartItems] = useState([]);
   const [cartNumber, setCartNumber] = useState(0);
@@ -12,74 +12,88 @@ const CustomerHeader = ({ cartdata ,removecartdata}) => {
 
   const router = useRouter();
 
+  // Load user from localStorage on mount
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch {
+        localStorage.removeItem("user");
+      }
     }
   }, []);
 
-  
-
- useEffect(() => {
-  if (!removecartdata) return;
-
-  setCartItems(prevCart => {
-    const updatedCart = prevCart.filter(item => item._id !== removecartdata);
-
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
-    setCartNumber(updatedCart.length);
-
-    if (updatedCart.length === 0) localStorage.removeItem('cart');
-
-    return updatedCart;
-  });
-}, [removecartdata]);
-
-
-  const Logout = () => {
-    localStorage.removeItem("user");
-    setUser(null);
-    router.push("/user-auth");
-  };
-
+  // Load cart from localStorage on mount
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
     setCartItems(storedCart);
-    setCartNumber(storedCart.length);
+    setCartNumber(storedCart.reduce((sum, item) => sum + (item.quantity || 1), 0));
   }, []);
 
+  // Handle remove from cart (via parent component)
+  useEffect(() => {
+    if (!removecartdata) return;
 
-   
-  const removeFromCart = (id) => {
-    const updatedCart = cartStorage.filter(item => item._id !== id);
-    setCartStorage(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
-  };
+    setCartItems(prevCart => {
+      const updatedCart = prevCart.filter(item => item._id !== removecartdata);
 
+      localStorage.setItem('cart', JSON.stringify(updatedCart));
+      setCartNumber(updatedCart.reduce((sum, item) => sum + (item.quantity || 1), 0));
 
+      if (updatedCart.length === 0) localStorage.removeItem('cart');
+
+      return updatedCart;
+    });
+  }, [removecartdata]);
+
+  // Handle add to cart (via parent component)
   useEffect(() => {
     if (!cartdata) return;
     setError("");
 
     setCartItems((prev) => {
+      // First item in cart
       if (prev.length === 0) {
-        localStorage.setItem("cart", JSON.stringify([cartdata]));
+        const newItem = { ...cartdata, quantity: 1 };
+        const newCart = [newItem];
+        localStorage.setItem("cart", JSON.stringify(newCart));
         setCartNumber(1);
-        return [cartdata];
+        return newCart;
       }
 
+      // Enforce single-restaurant cart
       if (prev[0].restro_id !== cartdata.restro_id) {
         setError("You can order from only one restaurant at a time.");
         return prev;
       }
 
-      const updated = [...prev, cartdata];
+      // Check if item already in cart — increase quantity
+      const existingIndex = prev.findIndex(item => item._id === cartdata._id);
+      let updated;
+
+      if (existingIndex >= 0) {
+        updated = prev.map((item, idx) =>
+          idx === existingIndex
+            ? { ...item, quantity: (item.quantity || 1) + 1 }
+            : item
+        );
+      } else {
+        updated = [...prev, { ...cartdata, quantity: 1 }];
+      }
+
       localStorage.setItem("cart", JSON.stringify(updated));
-      setCartNumber(updated.length);
+      setCartNumber(updated.reduce((sum, item) => sum + (item.quantity || 1), 0));
       return updated;
     });
   }, [cartdata]);
+
+  const Logout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    setUser(null);
+    router.push("/user-auth");
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-200">
@@ -107,11 +121,19 @@ const CustomerHeader = ({ cartdata ,removecartdata}) => {
               )}
             </Link>
             {error && (
-              <p className="absolute top-full mt-2 text-xs text-red-500">
+              <p className="absolute top-full mt-2 text-xs text-red-500 whitespace-nowrap">
                 {error}
               </p>
             )}
           </li>
+
+          {user && (
+            <li>
+              <Link href="/orders" className="hover:text-green-700">
+                My Orders
+              </Link>
+            </li>
+          )}
 
           <li>
             <Link href="/restuarant" className="hover:text-green-700">

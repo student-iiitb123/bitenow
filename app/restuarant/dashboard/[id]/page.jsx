@@ -4,8 +4,8 @@ import { useRouter, useParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
 
 const EditFoodItems = () => {
-  const params = useParams(); 
-  const { id } = params; 
+  const params = useParams();
+  const { id } = params;
   const router = useRouter();
 
   const [name, setName] = useState("");
@@ -13,55 +13,80 @@ const EditFoodItems = () => {
   const [path, setPath] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(true);
 
+  useEffect(() => {
+    const fetchFoodItem = async () => {
+      try {
+        const res = await fetch(`/api/restuarant/foods/edit/${id}`);
+        const data = await res.json();
 
-useEffect(() => {
-  const fetchFoodItem = async () => {
-    try {
-      const res = await fetch(`/api/restuarant/foods/edit/${id}`);
-      const data = await res.json();
-      console.log("Fetched food item:", data);
-
-     
-      const item = data.result || data;
-      setName(item.name || "");
-      setPrice(item.price || "");
-      setPath(item.path || "");
-      setDescription(item.description || "");
-    } catch (err) {
-      console.error("Failed to fetch food item", err);
-    }
-  };
-  fetchFoodItem();
-}, [id]);
-
+        const item = data.result || data;
+        setName(item.name || "");
+        setPrice(item.price?.toString() || "");
+        setPath(item.path || "");
+        setDescription(item.description || "");
+      } catch (err) {
+        console.error("Failed to fetch food item", err);
+      } finally {
+        setFetching(false);
+      }
+    };
+    fetchFoodItem();
+  }, [id]);
 
   const handleEditFoodItem = async () => {
     if (!name || !price || !path || !description) {
       setError(true);
       return;
     }
+
+    const numericPrice = Number(price);
+    if (isNaN(numericPrice) || numericPrice < 0) {
+      alert("Price must be a valid non-negative number");
+      return;
+    }
+
     setError(false);
+    setLoading(true);
+
+    const token = localStorage.getItem("restaurantToken");
 
     try {
       const res = await fetch(`/api/restuarant/foods/edit/${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, price, path, description }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ name, price: numericPrice, path, description }),
       });
 
-      if (res.ok) {
-        router.push("/restuarant/dashboard"); 
+      const data = await res.json();
+
+      if (data.success) {
+        router.push("/restuarant/dashboard");
       } else {
-        console.error("Failed to update food item");
+        alert(data.message || "Failed to update food item");
       }
     } catch (err) {
       console.error(err);
+      alert("Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
+  if (fetching) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-gray-500">
+        Loading food item...
+      </div>
+    );
+  }
+
   return (
-       
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
         <h1 className="text-2xl font-semibold text-center mb-6">
@@ -75,9 +100,9 @@ useEffect(() => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="w-full h-11 px-4 border rounded-md"
+            disabled={loading}
           />
-          {error && !name && <span className="text-red-500
-          ">Name is required</span>}
+          {error && !name && <span className="text-red-500 text-sm">Name is required</span>}
 
           <input
             type="number"
@@ -85,31 +110,36 @@ useEffect(() => {
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             className="w-full h-11 px-4 border rounded-md"
+            min="0"
+            disabled={loading}
           />
-          {error && !price && <span className="text-red-500">Price is required</span>}
+          {error && !price && <span className="text-red-500 text-sm">Price is required</span>}
 
           <input
             type="text"
-            placeholder="Enter image path"
+            placeholder="Enter image URL"
             value={path}
             onChange={(e) => setPath(e.target.value)}
             className="w-full h-11 px-4 border rounded-md"
+            disabled={loading}
           />
-          {error && !path && <span className="text-red-500">Path is required</span>}
+          {error && !path && <span className="text-red-500 text-sm">Image URL is required</span>}
 
           <textarea
             placeholder="Enter description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             className="w-full h-24 px-4 py-2 border rounded-md"
+            disabled={loading}
           />
-          {error && !description && <span className="text-red-500">Description is required</span>}
+          {error && !description && <span className="text-red-500 text-sm">Description is required</span>}
 
           <button
             onClick={handleEditFoodItem}
-            className="w-full h-11 bg-orange-600 text-white rounded-md hover:bg-orange-700"
+            disabled={loading}
+            className="w-full h-11 bg-orange-600 text-white rounded-md hover:bg-orange-700 disabled:opacity-50"
           >
-            Update Food Item
+            {loading ? "Updating..." : "Update Food Item"}
           </button>
 
           <button
@@ -121,7 +151,6 @@ useEffect(() => {
         </div>
       </div>
     </div>
-    
   );
 };
 

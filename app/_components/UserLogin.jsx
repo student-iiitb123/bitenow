@@ -9,32 +9,46 @@ export default function UserLogin() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const userLogin = async (e) => {
-    e.preventDefault(); //  IMPORTANT
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
-    const response = await fetch("/api/users", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        login: true,
-        email,
-        password,
-      }),
-    });
+    try {
+      const response = await fetch("/api/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          login: true,
+          email,
+          password,
+        }),
+      });
 
-    const result = await response.json();
+      const result = await response.json();
 
-    if (!result.success) {
-      alert(result.message);
-      return;
+      if (!result.success) {
+        setError(result.message || "Login failed");
+        setLoading(false);
+        return;
+      }
+
+      // Store token and user data (password already excluded by server)
+      const user = result.user || result.result;
+      if (result.token) {
+        localStorage.setItem("token", result.token);
+      }
+      localStorage.setItem("user", JSON.stringify(user));
+      router.push("/");
+    } catch (err) {
+      console.error("Login error:", err);
+      setError("Network error. Please try again.");
+    } finally {
+      setLoading(false);
     }
-
-    const user = result.user || result.result;
-    delete user.password;
-
-    localStorage.setItem("user", JSON.stringify(user));
-    router.push("/");
   };
 
   return (
@@ -48,7 +62,12 @@ export default function UserLogin() {
           Login to continue
         </p>
 
-        {/* ONLY onSubmit */}
+        {error && (
+          <p className="text-red-500 text-sm text-center mb-4 bg-red-50 py-2 rounded-lg">
+            {error}
+          </p>
+        )}
+
         <form onSubmit={userLogin} className="space-y-4">
 
           <div className="relative">
@@ -60,6 +79,7 @@ export default function UserLogin() {
               onChange={(e) => setEmail(e.target.value)}
               className="w-full h-12 pl-12 pr-4 rounded-xl bg-[#F8F6F1]"
               required
+              disabled={loading}
             />
           </div>
 
@@ -72,16 +92,17 @@ export default function UserLogin() {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full h-12 pl-12 pr-4 rounded-xl bg-[#F8F6F1]"
               required
+              disabled={loading}
             />
           </div>
 
-          {/*  NO onClick */}
           <button
             type="submit"
-            className="w-full h-12 mt-4 bg-[#6F8F73] text-white rounded-xl flex items-center justify-center gap-2"
+            disabled={loading}
+            className="w-full h-12 mt-4 bg-[#6F8F73] text-white rounded-xl flex items-center justify-center gap-2 disabled:opacity-50"
           >
             <LogIn size={18} />
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
 
         </form>

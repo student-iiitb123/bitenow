@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 const FoodItemList = () => {
   const [foods, setFoods] = useState([]);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -12,37 +13,46 @@ const FoodItemList = () => {
   }, []);
 
   const loadFoodItems = async () => {
-    const resturantData = JSON.parse(localStorage.getItem("resturantUser"));
-    const resto_id = resturantData?._id;
-    if (!resto_id) return;
-
     try {
-      const response = await fetch(
-        `/api/restuarant/foods/${resto_id}`
-      );
+      const resturantData = JSON.parse(localStorage.getItem("resturantUser"));
+      const resto_id = resturantData?._id;
+      if (!resto_id) return;
+
+      setLoading(true);
+      const response = await fetch(`/api/restuarant/foods/${resto_id}`);
       const result = await response.json();
-      if (result) {
-        setFoods(result.result);
+
+      if (result.success) {
+        setFoods(result.result || []);
       } else {
-        alert("Error fetching food items");
+        console.error("Failed to load food items");
+        setFoods([]);
       }
     } catch (err) {
       console.error(err);
-      alert("Something went wrong");
+      setFoods([]);
+    } finally {
+      setLoading(false);
     }
   };
 
   const deleteFoodItems = async (id) => {
+    if (!confirm("Are you sure you want to delete this item?")) return;
+
+    const token = localStorage.getItem("restaurantToken");
+
     try {
-      const response = await fetch(
-        `/api/restuarant/foods/${id}`,
-        { method: "DELETE" }
-      );
+      const response = await fetch(`/api/restuarant/foods/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const result = await response.json();
       if (result.success) {
         setFoods((prev) => prev.filter((item) => item._id !== id));
       } else {
-        alert("Food item not deleted");
+        alert(result.message || "Food item not deleted");
       }
     } catch (error) {
       console.error(error);
@@ -50,13 +60,21 @@ const FoodItemList = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="p-6 text-center text-gray-500">
+        Loading food items...
+      </div>
+    );
+  }
+
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-    {/* Page Header */}
-    <h1 className="text-3xl font-bold text-gray-800 mb-6">Food Items</h1>
+      {/* Page Header */}
+      <h1 className="text-3xl font-bold text-gray-800 mb-6">Food Items</h1>
       {/* Table Container */}
-       <div className="overflow-x-auto bg-white rounded-xl shadow-lg">
-      <table className="min-w-full border border-gray-200">
+      <div className="overflow-x-auto bg-white rounded-xl shadow-lg">
+        <table className="min-w-full border border-gray-200">
           <thead className="bg-gray-100">
             <tr>
               <th className="px-4 py-3">S.No.</th>
@@ -85,7 +103,7 @@ const FoodItemList = () => {
                   <td className="px-4 py-3 text-center space-x-2">
                     <button
                       onClick={() => deleteFoodItems(item._id)}
-                      className="px-3 py-1 bg-green-700 text-white rounded hover:bg-red-700 transition"
+                      className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition"
                     >
                       Delete
                     </button>
@@ -93,7 +111,7 @@ const FoodItemList = () => {
                       onClick={() =>
                         router.push(`/restuarant/dashboard/${item._id}`)
                       }
-                      className="px-3 py-1 bg-white-700 text-black rounded hover:bg-green-100 transition"
+                      className="px-3 py-1 bg-gray-200 text-black rounded hover:bg-green-100 transition"
                     >
                       Edit
                     </button>
@@ -106,7 +124,7 @@ const FoodItemList = () => {
                   colSpan="6"
                   className="px-4 py-6 text-center text-gray-500"
                 >
-                  No food items found
+                  No food items found. Add some from the sidebar!
                 </td>
               </tr>
             )}
