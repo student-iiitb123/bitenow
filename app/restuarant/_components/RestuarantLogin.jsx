@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Mail, Lock, LogIn } from "lucide-react";
+import { Mail, Lock, LogIn, AlertCircle } from "lucide-react";
 
 const RestuarantLogin = () => {
   const router = useRouter();
@@ -17,7 +17,6 @@ const RestuarantLogin = () => {
     setLoading(true);
 
     try {
-      // Send JSON — the API now supports both JSON and FormData
       const response = await fetch("/api/restuarant", {
         method: "POST",
         headers: {
@@ -33,7 +32,6 @@ const RestuarantLogin = () => {
       const result = await response.json();
 
       if (result.success) {
-        // Store token and user data (password excluded by server)
         const user = result.result;
         if (result.token) {
           localStorage.setItem("restaurantToken", result.token);
@@ -41,7 +39,7 @@ const RestuarantLogin = () => {
         localStorage.setItem("resturantUser", JSON.stringify(user));
         router.push("/restuarant/dashboard");
       } else {
-        setError(result.message || "Login failed");
+        setError(result.message || "Invalid credentials");
       }
     } catch (err) {
       console.error("Restaurant login error:", err);
@@ -52,79 +50,66 @@ const RestuarantLogin = () => {
   };
 
   return (
-    <>
-    <div className="bg-white rounded-2xl shadow-lg p-6">
-   
-      {/* Heading */}
+    <div className="w-full">
       <div className="text-center mb-6">
-        <h1 className="text-3xl font-bold text-[#3E5F4C]">
-          Restaurant Login
+        <h1 className="text-2xl font-black text-[#1E2923]">
+          Partner Login
         </h1>
-        <p className="text-sm text-gray-500 mt-1">
-          Manage your restaurant
+        <p className="text-xs text-[#57685D] mt-1">
+          Access your restaurant dashboard and manage orders
         </p>
       </div>
 
       {error && (
-        <p className="text-red-500 text-sm text-center mb-4 bg-red-50 py-2 rounded-lg">
-          {error}
-        </p>
+        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-red-600 text-xs font-semibold flex items-center gap-2">
+          <AlertCircle size={16} className="shrink-0" />
+          <span>{error}</span>
+        </div>
       )}
 
-      {/* Form */}
-      <form onSubmit={handleLogin} className="flex flex-col gap-4">
-        
-        {/* Email */}
-        <div className="relative">
-          <Mail
-            size={18}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-[#6F8F73]"
-          />
-          <input
-            type="email"
-            placeholder="Enter email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full h-11 pl-10 pr-3 border border-gray-300 rounded-lg
-                       focus:outline-none focus:ring-2 focus:ring-[#6F8F73]"
-            required
-            disabled={loading}
-          />
+      <form onSubmit={handleLogin} className="space-y-4">
+        <div className="space-y-1">
+          <label className="text-xs font-bold text-[#57685D] uppercase">Email Address</label>
+          <div className="flex items-center gap-3 h-12 px-4 rounded-xl bg-[#F7F5EF] border border-[#E2ECE5] focus-within:border-[#244C3A] transition-colors">
+            <Mail size={18} className="text-[#84948A]" />
+            <input
+              type="email"
+              placeholder="restaurant@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="flex-1 bg-transparent outline-none text-sm text-[#1E2923] font-medium placeholder-[#84948A]"
+              required
+              disabled={loading}
+            />
+          </div>
         </div>
 
-        {/* Password */}
-        <div className="relative">
-          <Lock
-            size={18}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-[#6F8F73]"
-          />
-          <input
-            type="password"
-            placeholder="Enter password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full h-11 pl-10 pr-3 border border-gray-300 rounded-lg
-                       focus:outline-none focus:ring-2 focus:ring-[#6F8F73]"
-            required
-            disabled={loading}
-          />
+        <div className="space-y-1">
+          <label className="text-xs font-bold text-[#57685D] uppercase">Password</label>
+          <div className="flex items-center gap-3 h-12 px-4 rounded-xl bg-[#F7F5EF] border border-[#E2ECE5] focus-within:border-[#244C3A] transition-colors">
+            <Lock size={18} className="text-[#84948A]" />
+            <input
+              type="password"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="flex-1 bg-transparent outline-none text-sm text-[#1E2923] font-medium placeholder-[#84948A]"
+              required
+              disabled={loading}
+            />
+          </div>
         </div>
 
-        {/* Button */}
         <button
           type="submit"
           disabled={loading}
-          className="mt-2 h-11 flex items-center justify-center gap-2
-                     bg-[#6F8F73] text-white rounded-lg font-medium
-                     hover:bg-[#5C7A62] transition-all disabled:opacity-50"
+          className="w-full h-12 mt-2 bg-[#244C3A] hover:bg-[#1A382B] text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-all shadow-xs disabled:opacity-50"
         >
           <LogIn size={18} />
-          {loading ? "Logging in..." : "Login"}
+          <span>{loading ? "Logging in..." : "Login to Dashboard"}</span>
         </button>
       </form>
-
     </div>
-    </>
   );
 };
 

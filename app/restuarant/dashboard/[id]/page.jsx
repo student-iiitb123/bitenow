@@ -2,6 +2,8 @@
 
 import { useRouter, useParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
+import Sidebar from "../../_components/SideBar";
+import { Edit3, Image, DollarSign, FileText, Utensils, ArrowLeft } from "lucide-react";
 
 const EditFoodItems = () => {
   const params = useParams();
@@ -36,7 +38,8 @@ const EditFoodItems = () => {
     fetchFoodItem();
   }, [id]);
 
-  const handleEditFoodItem = async () => {
+  const handleEditFoodItem = async (e) => {
+    e.preventDefault();
     if (!name || !price || !path || !description) {
       setError(true);
       return;
@@ -78,78 +81,125 @@ const EditFoodItems = () => {
     }
   };
 
-  if (fetching) {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-gray-500">
-        Loading food item...
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
-        <h1 className="text-2xl font-semibold text-center mb-6">
-          Update Food Item
-        </h1>
+    <div className="flex min-h-screen bg-[#F7F5EF] font-sans">
+      <Sidebar />
 
-        <div className="space-y-4">
-          <input
-            type="text"
-            placeholder="Enter food name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full h-11 px-4 border rounded-md"
-            disabled={loading}
-          />
-          {error && !name && <span className="text-red-500 text-sm">Name is required</span>}
+      <main className="ml-64 flex-1 p-8">
+        <div className="max-w-2xl mx-auto bg-white rounded-3xl border border-[#E2ECE5] shadow-xs p-8">
+          <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#E2ECE5]">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-[#244C3A] text-white flex items-center justify-center">
+                <Edit3 size={20} />
+              </div>
+              <div>
+                <h1 className="text-2xl font-black text-[#1E2923]">Update Food Item</h1>
+                <p className="text-xs text-[#57685D]">Modify details for {name || "this item"}</p>
+              </div>
+            </div>
 
-          <input
-            type="number"
-            placeholder="Enter food price"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            className="w-full h-11 px-4 border rounded-md"
-            min="0"
-            disabled={loading}
-          />
-          {error && !price && <span className="text-red-500 text-sm">Price is required</span>}
+            <button
+              onClick={() => router.push("/restuarant/dashboard")}
+              className="p-2 text-[#57685D] hover:text-[#1E2923] hover:bg-[#F7F5EF] rounded-xl transition-colors flex items-center gap-1 text-xs font-bold"
+            >
+              <ArrowLeft size={16} /> Back
+            </button>
+          </div>
 
-          <input
-            type="text"
-            placeholder="Enter image URL"
-            value={path}
-            onChange={(e) => setPath(e.target.value)}
-            className="w-full h-11 px-4 border rounded-md"
-            disabled={loading}
-          />
-          {error && !path && <span className="text-red-500 text-sm">Image URL is required</span>}
+          {fetching ? (
+            <div className="py-12 text-center text-[#57685D] animate-pulse font-medium">
+              Loading food details...
+            </div>
+          ) : (
+            <form onSubmit={handleEditFoodItem} className="space-y-4">
+              {/* NAME */}
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-[#57685D] uppercase">Food Name *</label>
+                <div className="flex items-center gap-3 h-12 px-4 rounded-xl bg-[#F7F5EF] border border-[#E2ECE5] focus-within:border-[#244C3A]">
+                  <Utensils size={18} className="text-[#84948A]" />
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="flex-1 bg-transparent outline-none text-sm text-[#1E2923] font-medium"
+                    required
+                    disabled={loading}
+                  />
+                </div>
+                {error && !name && <span className="text-red-500 text-xs">Name is required</span>}
+              </div>
 
-          <textarea
-            placeholder="Enter description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="w-full h-24 px-4 py-2 border rounded-md"
-            disabled={loading}
-          />
-          {error && !description && <span className="text-red-500 text-sm">Description is required</span>}
+              {/* PRICE */}
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-[#57685D] uppercase">Price (₹) *</label>
+                <div className="flex items-center gap-3 h-12 px-4 rounded-xl bg-[#F7F5EF] border border-[#E2ECE5] focus-within:border-[#244C3A]">
+                  <DollarSign size={18} className="text-[#84948A]" />
+                  <input
+                    type="number"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    className="flex-1 bg-transparent outline-none text-sm text-[#1E2923] font-medium"
+                    min="0"
+                    required
+                    disabled={loading}
+                  />
+                </div>
+                {error && !price && <span className="text-red-500 text-xs">Price is required</span>}
+              </div>
 
-          <button
-            onClick={handleEditFoodItem}
-            disabled={loading}
-            className="w-full h-11 bg-orange-600 text-white rounded-md hover:bg-orange-700 disabled:opacity-50"
-          >
-            {loading ? "Updating..." : "Update Food Item"}
-          </button>
+              {/* IMAGE URL */}
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-[#57685D] uppercase">Image URL *</label>
+                <div className="flex items-center gap-3 h-12 px-4 rounded-xl bg-[#F7F5EF] border border-[#E2ECE5] focus-within:border-[#244C3A]">
+                  <Image size={18} className="text-[#84948A]" />
+                  <input
+                    type="text"
+                    value={path}
+                    onChange={(e) => setPath(e.target.value)}
+                    className="flex-1 bg-transparent outline-none text-sm text-[#1E2923] font-medium"
+                    required
+                    disabled={loading}
+                  />
+                </div>
+                {error && !path && <span className="text-red-500 text-xs">Image URL is required</span>}
+              </div>
 
-          <button
-            onClick={() => router.push("/restuarant/dashboard")}
-            className="w-full h-11 bg-gray-400 text-white rounded-md hover:bg-gray-500"
-          >
-            Back to Food Item List
-          </button>
+              {/* DESCRIPTION */}
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-[#57685D] uppercase">Description *</label>
+                <div className="flex items-start gap-3 p-4 rounded-xl bg-[#F7F5EF] border border-[#E2ECE5] focus-within:border-[#244C3A]">
+                  <FileText size={18} className="text-[#84948A] mt-0.5" />
+                  <textarea
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    className="flex-1 bg-transparent outline-none text-sm text-[#1E2923] font-medium h-24 resize-none"
+                    required
+                    disabled={loading}
+                  />
+                </div>
+                {error && !description && <span className="text-red-500 text-xs">Description is required</span>}
+              </div>
+
+              <div className="pt-4 flex items-center justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => router.push("/restuarant/dashboard")}
+                  className="px-5 py-2.5 rounded-xl border border-[#E2ECE5] text-xs font-bold text-[#57685D] hover:bg-[#F7F5EF] transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="px-6 py-2.5 bg-[#E86A33] hover:bg-[#D4561E] text-white text-xs font-bold rounded-xl transition-all shadow-xs disabled:opacity-50"
+                >
+                  {loading ? "Saving..." : "Update Food Item"}
+                </button>
+              </div>
+            </form>
+          )}
         </div>
-      </div>
+      </main>
     </div>
   );
 };

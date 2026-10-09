@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, Lock, LogIn } from "lucide-react";
+import { Mail, Lock, LogIn, AlertCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function UserLogin() {
@@ -31,12 +31,11 @@ export default function UserLogin() {
       const result = await response.json();
 
       if (!result.success) {
-        setError(result.message || "Login failed");
+        setError(result.message || "Invalid credentials");
         setLoading(false);
         return;
       }
 
-      // Store token and user data (password already excluded by server)
       const user = result.user || result.result;
       if (result.token) {
         localStorage.setItem("token", result.token);
@@ -52,61 +51,61 @@ export default function UserLogin() {
   };
 
   return (
-    <div className="">
-      <div className="w-[380px] bg-[#EFE9DD] rounded-2xl shadow-xl p-8">
+    <div className="w-full">
+      <div className="text-center mb-6">
+        <h2 className="text-2xl font-black text-[#1E2923]">Welcome Back</h2>
+        <p className="text-xs text-[#57685D] mt-1">Login to access your cart and order history</p>
+      </div>
 
-        <h1 className="text-2xl font-semibold text-center text-[#2F3E34]">
-          Welcome Back
-        </h1>
-        <p className="text-center text-sm text-gray-500 mb-6">
-          Login to continue
-        </p>
+      {error && (
+        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-red-600 text-xs font-semibold flex items-center gap-2">
+          <AlertCircle size={16} className="shrink-0" />
+          <span>{error}</span>
+        </div>
+      )}
 
-        {error && (
-          <p className="text-red-500 text-sm text-center mb-4 bg-red-50 py-2 rounded-lg">
-            {error}
-          </p>
-        )}
-
-        <form onSubmit={userLogin} className="space-y-4">
-
-          <div className="relative">
-            <Mail className="absolute left-4 top-3.5 text-gray-500" size={18} />
+      <form onSubmit={userLogin} className="space-y-4">
+        <div className="space-y-1">
+          <label className="text-xs font-bold text-[#57685D] uppercase">Email Address</label>
+          <div className="flex items-center gap-3 h-12 px-4 rounded-xl bg-[#F7F5EF] border border-[#E2ECE5] focus-within:border-[#244C3A] transition-colors">
+            <Mail size={18} className="text-[#84948A]" />
             <input
               type="email"
-              placeholder="Email Address"
+              placeholder="jane@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full h-12 pl-12 pr-4 rounded-xl bg-[#F8F6F1]"
+              className="flex-1 bg-transparent outline-none text-sm text-[#1E2923] font-medium placeholder-[#84948A]"
               required
               disabled={loading}
             />
           </div>
+        </div>
 
-          <div className="relative">
-            <Lock className="absolute left-4 top-3.5 text-gray-500" size={18} />
+        <div className="space-y-1">
+          <label className="text-xs font-bold text-[#57685D] uppercase">Password</label>
+          <div className="flex items-center gap-3 h-12 px-4 rounded-xl bg-[#F7F5EF] border border-[#E2ECE5] focus-within:border-[#244C3A] transition-colors">
+            <Lock size={18} className="text-[#84948A]" />
             <input
               type="password"
-              placeholder="Password"
+              placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full h-12 pl-12 pr-4 rounded-xl bg-[#F8F6F1]"
+              className="flex-1 bg-transparent outline-none text-sm text-[#1E2923] font-medium placeholder-[#84948A]"
               required
               disabled={loading}
             />
           </div>
+        </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full h-12 mt-4 bg-[#6F8F73] text-white rounded-xl flex items-center justify-center gap-2 disabled:opacity-50"
-          >
-            <LogIn size={18} />
-            {loading ? "Logging in..." : "Login"}
-          </button>
-
-        </form>
-      </div>
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full h-12 mt-2 bg-[#244C3A] hover:bg-[#1A382B] text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-all shadow-xs disabled:opacity-50"
+        >
+          <LogIn size={18} />
+          <span>{loading ? "Logging in..." : "Log in"}</span>
+        </button>
+      </form>
     </div>
   );
 }

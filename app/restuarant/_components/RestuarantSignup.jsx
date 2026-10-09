@@ -10,6 +10,8 @@ import {
   Mail,
   Lock,
   UserPlus,
+  Upload,
+  AlertCircle
 } from "lucide-react";
 
 const RestuarantSignup = () => {
@@ -58,7 +60,6 @@ const RestuarantSignup = () => {
       const data = await res.json();
 
       if (data.success) {
-        // Store token and user data (password excluded by server)
         if (data.token) {
           localStorage.setItem("restaurantToken", data.token);
         }
@@ -76,157 +77,72 @@ const RestuarantSignup = () => {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-6">
-      
-      {/* Heading */}
+    <div className="w-full">
       <div className="text-center mb-6">
-        <h1 className="text-3xl font-bold text-[#3E5F4C]">
-          Create Restaurant Account
+        <h1 className="text-2xl font-black text-[#1E2923]">
+          Register Restaurant
         </h1>
-        <p className="text-sm text-gray-500 mt-1">
-          Join and manage your restaurant
+        <p className="text-xs text-[#57685D] mt-1">
+          Partner with BiteNow and reach thousands of customers
         </p>
       </div>
 
       {error && (
-        <p className="text-red-500 text-sm text-center mb-4 bg-red-50 py-2 rounded-lg">
-          {error}
-        </p>
+        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-red-600 text-xs font-semibold flex items-center gap-2">
+          <AlertCircle size={16} className="shrink-0" />
+          <span>{error}</span>
+        </div>
       )}
 
-      {/* Form */}
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        
-        {/* Owner Name */}
-        <div className="relative">
-          <User className="absolute left-3 top-1/2 -translate-y-1/2 text-[#6F8F73]" size={18} />
-          <input
-            type="text"
-            placeholder="Owner Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full h-11 pl-10 pr-3 border border-gray-300 rounded-lg
-                       focus:outline-none focus:ring-2 focus:ring-[#6F8F73]"
-            required
-            disabled={loading}
-          />
+      <form onSubmit={handleSubmit} className="space-y-3">
+        <Input icon={User} placeholder="Owner Full Name" value={name} setValue={setName} disabled={loading} />
+        <Input icon={Store} placeholder="Restaurant Name" value={restuarant} setValue={setRestuarant} disabled={loading} />
+        <Input icon={MapPin} placeholder="City (e.g. Mumbai)" value={city} setValue={setCity} disabled={loading} />
+        <Input icon={MapPin} placeholder="Full Address" value={address} setValue={setAddress} disabled={loading} />
+        <Input icon={Phone} type="tel" placeholder="Contact Phone Number" value={phone} setValue={setPhone} disabled={loading} />
+        <Input icon={Mail} type="email" placeholder="Business Email" value={email} setValue={setEmail} disabled={loading} />
+        <Input icon={Lock} type="password" placeholder="Password (min 6 chars)" value={password} setValue={setPassword} disabled={loading} />
+
+        <div className="space-y-1">
+          <label className="text-xs font-bold text-[#57685D] uppercase">Restaurant Banner Image</label>
+          <div className="flex items-center gap-3 h-11 px-4 rounded-xl bg-[#F7F5EF] border border-[#E2ECE5] focus-within:border-[#244C3A]">
+            <Upload size={16} className="text-[#84948A]" />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImage(e.target.files[0])}
+              className="flex-1 text-xs text-[#57685D] file:mr-3 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[#244C3A] file:text-white hover:file:bg-[#1A382B]"
+              disabled={loading}
+            />
+          </div>
         </div>
 
-        {/* Restaurant Name */}
-        <div className="relative">
-          <Store className="absolute left-3 top-1/2 -translate-y-1/2 text-[#6F8F73]" size={18} />
-          <input
-            type="text"
-            placeholder="Restaurant Name"
-            value={restuarant}
-            onChange={(e) => setRestuarant(e.target.value)}
-            className="w-full h-11 pl-10 pr-3 border border-gray-300 rounded-lg
-                       focus:outline-none focus:ring-2 focus:ring-[#6F8F73]"
-            required
-            disabled={loading}
-          />
-        </div>
-
-        {/* City */}
-        <div className="relative">
-          <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-[#6F8F73]" size={18} />
-          <input
-            type="text"
-            placeholder="City"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            className="w-full h-11 pl-10 pr-3 border border-gray-300 rounded-lg
-                       focus:outline-none focus:ring-2 focus:ring-[#6F8F73]"
-            required
-            disabled={loading}
-          />
-        </div>
-
-        {/* Address */}
-        <div className="relative">
-          <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-[#6F8F73]" size={18} />
-          <input
-            type="text"
-            placeholder="Address"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            className="w-full h-11 pl-10 pr-3 border border-gray-300 rounded-lg
-                       focus:outline-none focus:ring-2 focus:ring-[#6F8F73]"
-            required
-            disabled={loading}
-          />
-        </div>
-
-        {/* Phone */}
-        <div className="relative">
-          <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-[#6F8F73]" size={18} />
-          <input
-            type="tel"
-            placeholder="Contact Number"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="w-full h-11 pl-10 pr-3 border border-gray-300 rounded-lg
-                       focus:outline-none focus:ring-2 focus:ring-[#6F8F73]"
-            required
-            disabled={loading}
-          />
-        </div>
-
-        {/* Email */}
-        <div className="relative">
-          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-[#6F8F73]" size={18} />
-          <input
-            type="email"
-            placeholder="Email Address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full h-11 pl-10 pr-3 border border-gray-300 rounded-lg
-                       focus:outline-none focus:ring-2 focus:ring-[#6F8F73]"
-            required
-            disabled={loading}
-          />
-        </div>
-
-        {/* Password */}
-        <div className="relative">
-          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-[#6F8F73]" size={18} />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full h-11 pl-10 pr-3 border border-gray-300 rounded-lg
-                       focus:outline-none focus:ring-2 focus:ring-[#6F8F73]"
-            required
-            disabled={loading}
-          />
-        </div>
-
-        <div className="relative">
-          <User className="absolute left-3 top-1/2 -translate-y-1/2 text-[#6F8F73]" size={18} />
-         <input
-  type="file"
-  accept="image/*"
-  onChange={(e) => setImage(e.target.files[0])}
-  className="w-full h-11 pl-10 pr-3 border border-gray-300 rounded-lg
-             focus:outline-none focus:ring-2 focus:ring-[#6F8F73]"
-/>
-        </div>
-
-        {/* Submit */}
         <button
           type="submit"
           disabled={loading}
-          className="mt-2 h-11 flex items-center justify-center gap-2
-                     bg-[#6F8F73] text-white rounded-lg font-medium
-                     hover:bg-[#5C7A62] transition-all disabled:opacity-50"
+          className="w-full h-12 mt-4 bg-[#244C3A] hover:bg-[#1A382B] text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-all shadow-xs disabled:opacity-50"
         >
           <UserPlus size={18} />
-          {loading ? "Creating account..." : "Create Account"}
+          <span>{loading ? "Creating Partner Account..." : "Create Account"}</span>
         </button>
       </form>
     </div>
   );
 };
+
+const Input = ({ icon: Icon, type = "text", placeholder, value, setValue, disabled }) => (
+  <div className="flex items-center gap-3 h-11 px-4 rounded-xl bg-[#F7F5EF] border border-[#E2ECE5] focus-within:border-[#244C3A] transition-colors">
+    <Icon size={16} className="text-[#84948A]" />
+    <input
+      type={type}
+      placeholder={placeholder}
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+      className="flex-1 bg-transparent outline-none text-sm font-medium text-[#1E2923] placeholder-[#84948A]"
+      required
+      disabled={disabled}
+    />
+  </div>
+);
 
 export default RestuarantSignup;

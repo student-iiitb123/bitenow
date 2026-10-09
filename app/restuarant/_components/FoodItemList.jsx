@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { EmptyState } from "../../_components/ui/EmptyState";
+import { Utensils, Trash2, Edit2, Plus, Sparkles } from "lucide-react";
 
 const FoodItemList = () => {
   const [foods, setFoods] = useState([]);
@@ -25,7 +27,6 @@ const FoodItemList = () => {
       if (result.success) {
         setFoods(result.result || []);
       } else {
-        console.error("Failed to load food items");
         setFoods([]);
       }
     } catch (err) {
@@ -37,7 +38,7 @@ const FoodItemList = () => {
   };
 
   const deleteFoodItems = async (id) => {
-    if (!confirm("Are you sure you want to delete this item?")) return;
+    if (!confirm("Are you sure you want to delete this food item?")) return;
 
     const token = localStorage.getItem("restaurantToken");
 
@@ -60,77 +61,96 @@ const FoodItemList = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="p-6 text-center text-gray-500">
-        Loading food items...
-      </div>
-    );
-  }
-
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      {/* Page Header */}
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Food Items</h1>
-      {/* Table Container */}
-      <div className="overflow-x-auto bg-white rounded-xl shadow-lg">
-        <table className="min-w-full border border-gray-200">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="px-4 py-3">S.No.</th>
-              <th className="px-4 py-3">Name</th>
-              <th className="px-4 py-3">Price (₹)</th>
-              <th className="px-4 py-3">Description</th>
-              <th className="px-4 py-3">Image</th>
-              <th className="px-4 py-3 text-center">Operations</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Array.isArray(foods) && foods.length > 0 ? (
-              foods.map((item, index) => (
-                <tr key={item._id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3">{index + 1}</td>
-                  <td className="px-4 py-3 font-medium">{item.name}</td>
-                  <td className="px-4 py-3">{item.price}</td>
-                  <td className="px-4 py-3">{item.description}</td>
-                  <td className="px-4 py-3">
-                    <img
-                      src={item.path}
-                      alt={item.name}
-                      className="w-12 h-12 rounded object-cover"
-                    />
-                  </td>
-                  <td className="px-4 py-3 text-center space-x-2">
-                    <button
-                      onClick={() => deleteFoodItems(item._id)}
-                      className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition"
-                    >
-                      Delete
-                    </button>
-                    <button
-                      onClick={() =>
-                        router.push(`/restuarant/dashboard/${item._id}`)
-                      }
-                      className="px-3 py-1 bg-gray-200 text-black rounded hover:bg-green-100 transition"
-                    >
-                      Edit
-                    </button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td
-                  colSpan="6"
-                  className="px-4 py-6 text-center text-gray-500"
-                >
-                  No food items found. Add some from the sidebar!
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+    <div className="space-y-6">
+      {/* HEADER BAR */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-xl font-black text-[#1E2923]">Menu Items ({foods.length})</h2>
+          <p className="text-xs text-[#57685D]">Manage your active restaurant food menu</p>
+        </div>
+
+        <button
+          onClick={() => router.push("/restuarant/addfood")}
+          className="px-4 py-2.5 bg-[#244C3A] hover:bg-[#1A382B] text-white text-xs font-bold rounded-xl transition-all shadow-xs flex items-center gap-1.5"
+        >
+          <Plus size={16} />
+          <span>Add New Food</span>
+        </button>
       </div>
+
+      {loading ? (
+        <div className="text-center py-12 text-[#57685D] animate-pulse">
+          Loading food items...
+        </div>
+      ) : foods.length === 0 ? (
+        <EmptyState
+          icon={Utensils}
+          title="No food items added"
+          description="Your restaurant menu is currently empty. Add food items so customers can view and order from your restaurant!"
+          actionText="Add First Food Item"
+          onAction={() => router.push("/restuarant/addfood")}
+        />
+      ) : (
+        <div className="overflow-hidden bg-white rounded-2xl border border-[#E2ECE5] shadow-xs">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm text-[#1E2923]">
+              <thead className="bg-[#F7F5EF] text-xs uppercase font-bold text-[#57685D] border-b border-[#E2ECE5]">
+                <tr>
+                  <th className="px-6 py-4">S.No</th>
+                  <th className="px-6 py-4">Item Details</th>
+                  <th className="px-6 py-4">Price</th>
+                  <th className="px-6 py-4">Description</th>
+                  <th className="px-6 py-4 text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[#E2ECE5]">
+                {foods.map((item, index) => (
+                  <tr key={item._id} className="hover:bg-[#F7F5EF]/60 transition-colors">
+                    <td className="px-6 py-4 font-semibold text-[#57685D]">{index + 1}</td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <img
+                          src={item.path || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=100&q=80"}
+                          alt={item.name}
+                          className="w-12 h-12 rounded-xl object-cover border border-[#E2ECE5] bg-[#F7F5EF]"
+                        />
+                        <span className="font-bold text-[#1E2923]">{item.name}</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="font-black text-[#244C3A] bg-[#E6EFEA] px-3 py-1 rounded-full text-xs">
+                        ₹{item.price}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 max-w-xs">
+                      <p className="text-xs text-[#57685D] line-clamp-2">{item.description}</p>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center justify-center gap-2">
+                        <button
+                          onClick={() => router.push(`/restuarant/dashboard/${item._id}`)}
+                          className="p-2 text-[#244C3A] bg-[#E6EFEA] hover:bg-[#C1D8CD] rounded-xl transition-colors"
+                          title="Edit Food Item"
+                        >
+                          <Edit2 size={16} />
+                        </button>
+                        <button
+                          onClick={() => deleteFoodItems(item._id)}
+                          className="p-2 text-red-600 bg-red-50 hover:bg-red-100 rounded-xl transition-colors"
+                          title="Delete Food Item"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

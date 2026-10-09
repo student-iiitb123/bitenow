@@ -9,7 +9,8 @@ import {
   MapPin,
   Home,
   Phone,
-  UserPlus
+  UserPlus,
+  AlertCircle
 } from "lucide-react"
 
 const UserSignUp = () => {
@@ -60,7 +61,6 @@ const UserSignUp = () => {
       const data = await response.json()
 
       if (data.success) {
-        // Store token and user (password already excluded by server)
         const user = data.result || data.user
         if (data.token) {
           localStorage.setItem("token", data.token)
@@ -79,70 +79,50 @@ const UserSignUp = () => {
   }
 
   return (
-    <div className="">
-      <form
-        onSubmit={userSignUp}
-        className=""
-      >
-        <div className="text-center mb-3">
-          <h2 className="text-2xl font-semibold text-[#2F3E34]">
-            Create Account
-          </h2>
-          <p className="text-sm text-[#7A857C]">
-            Sign up to get started
-          </p>
+    <div className="w-full">
+      <div className="text-center mb-6">
+        <h2 className="text-2xl font-black text-[#1E2923]">Create Account</h2>
+        <p className="text-xs text-[#57685D] mt-1">Sign up to get fresh food delivered to your door</p>
+      </div>
+
+      {error && (
+        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-red-600 text-xs font-semibold flex items-center gap-2">
+          <AlertCircle size={16} className="shrink-0" />
+          <span>{error}</span>
         </div>
+      )}
 
-        {error && (
-          <p className="text-red-500 text-sm text-center mb-3 bg-red-50 py-2 rounded-lg">
-            {error}
-          </p>
-        )}
-
-        {/* Name */}
+      <form onSubmit={userSignUp} className="space-y-3">
         <Input icon={User} placeholder="Full Name" value={name} setValue={setName} disabled={loading} />
-
-        {/* Email */}
         <Input icon={Mail} type="email" placeholder="Email Address" value={email} setValue={setEmail} disabled={loading} />
-
-        {/* Password */}
         <Input icon={Lock} type="password" placeholder="Password" value={password} setValue={setPassword} disabled={loading} />
-
-        {/* Confirm Password */}
         <Input icon={Lock} type="password" placeholder="Confirm Password" value={confirmPassword} setValue={setConfirmPassword} disabled={loading} />
-
-        
-        <Input icon={MapPin} placeholder="City" value={city} setValue={setCity} disabled={loading} />
-
-        
-        <Input icon={Home} placeholder="Address" value={address} setValue={setAddress} disabled={loading} />
-
-      
+        <Input icon={MapPin} placeholder="City (e.g. Mumbai)" value={city} setValue={setCity} disabled={loading} />
+        <Input icon={Home} placeholder="Full Delivery Address" value={address} setValue={setAddress} disabled={loading} />
         <Input icon={Phone} type="tel" placeholder="Mobile Number" value={mobile} setValue={setMobile} disabled={loading} />
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full mt-2 flex items-center justify-center gap-2 bg-[#6F8F73] hover:bg-[#5f7f64] text-white py-2.5 rounded-xl font-medium transition disabled:opacity-50"
+          className="w-full h-12 mt-4 bg-[#244C3A] hover:bg-[#1A382B] text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-all shadow-xs disabled:opacity-50"
         >
           <UserPlus size={18} />
-          {loading ? "Creating account..." : "Sign Up"}
+          <span>{loading ? "Creating Account..." : "Sign Up"}</span>
         </button>
       </form>
     </div>
   )
 }
 
-/* Reusable Input Component */
 const Input = ({ icon: Icon, type = "text", placeholder, value, setValue, disabled }) => (
-  <div className="flex items-center gap-3 h-12 px-4 rounded-xl bg-[#F4F1EC] shadow-inner focus-within:ring-2 focus-within:ring-[#6F8F73]/30 transition group">
-    <Icon size={18} className="text-[#7A857C] group-focus-within:text-[#6F8F73]" />
+  <div className="flex items-center gap-3 h-11 px-4 rounded-xl bg-[#F7F5EF] border border-[#E2ECE5] focus-within:border-[#244C3A] transition-colors">
+    <Icon size={16} className="text-[#84948A]" />
     <input
       type={type}
       placeholder={placeholder}
       value={value}
       onChange={(e) => setValue(e.target.value)}
-      className="flex-1 bg-transparent outline-none text-[#2F3E34] placeholder-[#7A857C]"
+      className="flex-1 bg-transparent outline-none text-sm font-medium text-[#1E2923] placeholder-[#84948A]"
       required
       disabled={disabled}
     />
