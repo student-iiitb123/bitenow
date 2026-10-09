@@ -85,8 +85,8 @@ const EditFoodItems = () => {
     <div className="flex min-h-screen bg-[#F7F5EF] font-sans">
       <Sidebar />
 
-      <main className="ml-64 flex-1 p-8">
-        <div className="max-w-2xl mx-auto bg-white rounded-3xl border border-[#E2ECE5] shadow-xs p-8">
+      <main className="ml-64 flex-1 p-8 min-h-screen flex flex-col justify-between">
+        <div className="max-w-2xl mx-auto bg-white rounded-3xl border border-[#E2ECE5] shadow-xs p-8 w-full">
           <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#E2ECE5]">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-[#244C3A] text-white flex items-center justify-center">
@@ -199,6 +199,12 @@ const EditFoodItems = () => {
             </form>
           )}
         </div>
+
+        {/* MERCHANT FOOTER */}
+        <footer className="pt-8 text-xs text-[#80A693] flex justify-between items-center border-t border-[#E2ECE5] mt-8">
+          <p>© {new Date().getFullYear()} BiteNow Merchant Portal. All rights reserved.</p>
+          <p>Partner Support</p>
+        </footer>
       </main>
     </div>
   );
